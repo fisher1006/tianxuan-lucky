@@ -989,10 +989,8 @@
         ];
 
         // ====== COMMUNITY DATA ======
-        const communityNames = [
-            "北京", "上海", "广州", "深圳", "杭州", "成都", "武汉", "西安",
-            "南京", "苏州", "重庆", "天津", "青岛", "长沙", "郑州", "济南"
-        ];
+        // 运势等级（用于显示他人结果）
+        const fortuneTypes = ["大吉 · 愚人", "中吉 · 太阳", "小吉 · 星星", "吉 · 月亮", "末吉 · 塔"];
 
         // ====== UTILITY FUNCTIONS ======
         function generateStars() {
@@ -1054,7 +1052,7 @@
 
         function getRandomCommunity() {
             const fortune = getRandomFortune();
-            const name = communityNames[Math.floor(Math.random() * communityNames.length)];
+            const name = fortuneTypes[Math.floor(Math.random() * fortuneTypes.length)];
             const matchRate = (95 + Math.random() * 5).toFixed(1);
             return { fortune, name, matchRate };
         }
