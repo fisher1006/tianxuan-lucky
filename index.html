@@ -376,6 +376,10 @@
             const savedCode = localStorage.getItem('inviteCode');
             if (savedCode) {
                 document.getElementById('inviteCode').value = savedCode;
+                // 有保存的邀请码，直接隐藏输入框（之前已验证成功过）
+                // 同时异步验证更新状态
+                validated = true;
+                document.getElementById('inviteSection').classList.remove('active');
                 validateSavedCode(savedCode);
             } else {
                 document.getElementById('inviteSection').classList.add('active');
