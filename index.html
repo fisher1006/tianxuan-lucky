@@ -7,7 +7,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <!-- <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script> -->
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <style>
         :root { --gold: #d4af37; --gold-light: #f4e4ba; --gold-dark: #aa8c2c; --deep-purple: #1a0a2e; --purple-dark: #16213e; --purple-light: #2d1b4e; --cream: #faf8f0; }
@@ -18,99 +17,110 @@
         @keyframes twinkle { 0%, 100% { opacity: var(--min-opacity); transform: scale(1); } 50% { opacity: 1; transform: scale(1.2); } }
         .nebula { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(ellipse at 20% 20%, rgba(139, 0, 0, 0.15) 0%, transparent 50%), radial-gradient(ellipse at 80% 80%, rgba(75, 0, 130, 0.2) 0%, transparent 50%), radial-gradient(ellipse at 50% 50%, rgba(212, 175, 55, 0.05) 0%, transparent 70%); pointer-events: none; z-index: 1; }
         .container { position: relative; z-index: 10; max-width: 600px; margin: 0 auto; padding: 20px; min-height: 100vh; padding-bottom: 100px; }
-        .header { text-align: center; padding: 40px 0 30px; animation: fadeInDown 0.8s ease-out; }
+        
+        .page { display: none; }
+        .page.active { display: block; }
+        
+        .header { text-align: center; padding: 30px 0 20px; animation: fadeInDown 0.8s ease-out; }
         @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
-        .title { font-size: 2.5rem; font-weight: 700; background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 50%, var(--gold-dark) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-shadow: 0 0 40px rgba(212, 175, 55, 0.3); margin-bottom: 10px; letter-spacing: 4px; }
-        .subtitle { font-size: 1rem; color: rgba(250, 248, 240, 0.6); font-weight: 300; letter-spacing: 2px; }
-        .card { background: linear-gradient(145deg, rgba(45, 27, 78, 0.9), rgba(26, 10, 46, 0.95)); border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 20px; padding: 30px; margin-bottom: 20px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); }
-        .showcase { animation: fadeInUp 0.8s ease-out 0.1s both; margin-bottom: 30px; }
-        .showcase-title { font-size: 1rem; color: var(--gold); margin-bottom: 15px; text-align: center; letter-spacing: 2px; }
+        .title { font-size: 2.2rem; font-weight: 700; background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 50%, var(--gold-dark) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; letter-spacing: 4px; }
+        .subtitle { font-size: 0.9rem; color: rgba(250, 248, 240, 0.6); font-weight: 300; letter-spacing: 2px; }
+        
+        .card { background: linear-gradient(145deg, rgba(45, 27, 78, 0.9), rgba(26, 10, 46, 0.95)); border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 16px; padding: 20px; margin-bottom: 16px; }
+        
+        /* 主按钮区域 */
+        .action-section { margin-bottom: 20px; }
+        .btn { display: block; width: 100%; padding: 16px 24px; font-size: 1.1rem; font-weight: 600; font-family: inherit; border: none; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; letter-spacing: 2px; }
+        .btn-primary { background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%); color: var(--deep-purple); box-shadow: 0 4px 25px rgba(212, 175, 55, 0.4); }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 35px rgba(212, 175, 55, 0.6); }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        
+        /* 邀请码区域 */
+        .invite-section { display: none; }
+        .invite-section.active { display: block; }
+        .btn-get-invite { display: block; width: 100%; padding: 12px; font-size: 0.9rem; background: rgba(255, 255, 255, 0.08); color: var(--gold-light); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 10px; cursor: pointer; margin-bottom: 12px; transition: all 0.3s ease; text-decoration: none; text-align: center; }
+        .btn-get-invite:hover { background: rgba(255, 255, 255, 0.12); border-color: var(--gold); }
+        .input-group { margin-bottom: 12px; }
+        .input-label { display: block; font-size: 0.85rem; color: var(--gold-light); margin-bottom: 6px; letter-spacing: 1px; }
+        .input-field { width: 100%; padding: 14px 18px; font-size: 1rem; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 10px; color: var(--cream); font-family: inherit; transition: all 0.3s ease; text-align: center; letter-spacing: 2px; }
+        .input-field:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 20px rgba(212, 175, 55, 0.2); }
+        .input-field::placeholder { color: rgba(250, 248, 240, 0.3); }
+        
+        .error-msg { color: #ff6b6b; margin-top: 10px; font-size: 0.85rem; text-align: center; }
+        .success-msg { color: #4ecdc4; margin-top: 10px; font-size: 0.85rem; text-align: center; }
+        
+        /* 案例展示 */
+        .showcase { margin-bottom: 20px; }
+        .showcase-title { font-size: 0.9rem; color: var(--gold); margin-bottom: 12px; text-align: center; letter-spacing: 2px; }
         .showcase-list { display: flex; flex-direction: column; gap: 10px; }
         .showcase-item { background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(212, 175, 55, 0.15); border-radius: 12px; padding: 14px 16px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 12px; }
         .showcase-item:hover { transform: translateX(5px); border-color: var(--gold); box-shadow: 0 5px 20px rgba(212, 175, 55, 0.2); }
         .showcase-symbol { font-size: 1.8rem; min-width: 45px; text-align: center; }
         .showcase-info { flex: 1; }
-        .showcase-level { font-size: 1.1rem; font-weight: 700; margin-bottom: 5px; }
-        .showcase-symbol { font-size: 1.5rem; margin-bottom: 5px; }
+        .showcase-level { font-size: 1rem; font-weight: 700; margin-bottom: 3px; }
         .showcase-name { font-size: 0.75rem; color: rgba(250, 248, 240, 0.6); }
-        .showcase-poem { font-size: 0.7rem; color: rgba(250, 248, 240, 0.5); margin-top: 8px; line-height: 1.4; font-style: italic; }
-        .input-section { animation: fadeInUp 0.8s ease-out 0.2s both; }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-        .btn-get-invite { display: block; width: 100%; padding: 10px; font-size: 0.85rem; background: rgba(255, 255, 255, 0.08); color: var(--gold-light); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 10px; cursor: pointer; margin-bottom: 16px; transition: all 0.3s ease; letter-spacing: 1px; text-decoration: none; text-align: center; }
-        .btn-get-invite:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(255, 107, 107, 0.4); }
-        .input-group { margin-bottom: 20px; }
-        .input-label { display: block; font-size: 0.9rem; color: var(--gold-light); margin-bottom: 8px; letter-spacing: 1px; }
-        .input-field { width: 100%; padding: 15px 20px; font-size: 1.1rem; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 12px; color: var(--cream); font-family: inherit; transition: all 0.3s ease; text-align: center; letter-spacing: 2px; }
-        .input-field:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 20px rgba(212, 175, 55, 0.2); }
-        .input-field::placeholder { color: rgba(250, 248, 240, 0.3); }
-        .btn { display: inline-block; width: 100%; padding: 16px 30px; font-size: 1.1rem; font-weight: 600; font-family: inherit; border: none; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; letter-spacing: 2px; position: relative; overflow: hidden; }
-        .btn-primary { background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%); color: var(--deep-purple); box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3); }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 30px rgba(212, 175, 55, 0.5); }
-        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-        .error-msg { color: #ff6b6b; margin-top: 10px; font-size: 0.9rem; text-align: center; }
-        .success-msg { color: #4ecdc4; margin-top: 10px; font-size: 0.9rem; text-align: center; }
-        .loading { display: none; text-align: center; padding: 60px 20px; }
+        .showcase-poem { font-size: 0.7rem; color: rgba(250, 248, 240, 0.5); margin-top: 5px; font-style: italic; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        
+        /* Loading */
+        .loading { display: none; text-align: center; padding: 80px 20px; }
         .loading.active { display: block; }
-        .loading-text { font-size: 1.2rem; margin-bottom: 30px; color: var(--gold-light); }
+        .loading-text { font-size: 1.1rem; margin-bottom: 30px; color: var(--gold-light); }
         .loading-dots { display: flex; justify-content: center; gap: 12px; }
-        .loading-dot { width: 14px; height: 14px; background: var(--gold); border-radius: 50%; animation: bounce 1.4s ease-in-out infinite; }
+        .loading-dot { width: 12px; height: 12px; background: var(--gold); border-radius: 50%; animation: bounce 1.4s ease-in-out infinite; }
         .loading-dot:nth-child(1) { animation-delay: -0.32s; }
         .loading-dot:nth-child(2) { animation-delay: -0.16s; }
         @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
-        .result-section { display: none; animation: fadeInUp 0.8s ease-out; }
-        .result-section.active { display: block; }
-        .flip-card-container { perspective: 1000px; margin-bottom: 25px; }
-        .flip-card { position: relative; width: 100%; height: 280px; transition: transform 0.8s; transform-style: preserve-3d; cursor: pointer; }
+        
+        /* 结果页 */
+        .result-header { text-align: center; padding: 20px 0 15px; }
+        .result-title { font-size: 1.8rem; font-weight: 700; background: linear-gradient(135deg, var(--gold-light), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .flip-card-container { perspective: 1000px; margin-bottom: 20px; }
+        .flip-card { position: relative; width: 100%; height: 260px; transition: transform 0.8s; transform-style: preserve-3d; cursor: pointer; }
         .flip-card.flipped { transform: rotateY(180deg); }
-        .flip-card-front, .flip-card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 16px; padding: 25px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .flip-card-front, .flip-card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .flip-card-front { background: linear-gradient(145deg, rgba(45, 27, 78, 0.95), rgba(26, 10, 46, 0.98)); border: 2px solid var(--gold); }
         .flip-card-back { background: linear-gradient(145deg, rgba(26, 10, 46, 0.98), rgba(45, 27, 78, 0.95)); border: 2px solid var(--gold); transform: rotateY(180deg); text-align: left; justify-content: flex-start; overflow-y: auto; }
-        .fortune-header { text-align: center; margin-bottom: 20px; }
-        .fortune-level { font-size: 2.5rem; font-weight: 700; margin-bottom: 8px; }
+        
+        .fortune-level { font-size: 2rem; font-weight: 700; margin-bottom: 8px; }
         .level-daji { background: linear-gradient(135deg, #ffd700, #ffaa00); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .level-zhongji { background: linear-gradient(135deg, #87ceeb, #4a90d9); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .level-xiaoji { background: linear-gradient(135deg, #90ee90, #32cd32); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .fortune-sub { font-size: 0.9rem; color: rgba(250, 248, 240, 0.6); }
-        .tarot-symbol { font-size: 3.5rem; margin-bottom: 12px; }
-        .tarot-name { font-size: 1.2rem; color: var(--gold-light); font-weight: 600; margin-bottom: 5px; }
+        .fortune-sub { font-size: 0.85rem; color: rgba(250, 248, 240, 0.6); }
+        .tarot-symbol { font-size: 3rem; margin-bottom: 10px; }
+        .tarot-name { font-size: 1.1rem; color: var(--gold-light); font-weight: 600; margin-bottom: 5px; }
         .tarot-label { font-size: 0.7rem; color: rgba(250, 248, 240, 0.5); }
         .flip-hint { font-size: 0.75rem; color: rgba(250, 248, 240, 0.4); margin-top: 15px; }
-        .back-title { font-size: 1rem; color: var(--gold); margin-bottom: 12px; text-align: center; letter-spacing: 2px; }
-        .back-poem { font-size: 0.95rem; color: var(--cream); line-height: 1.7; text-align: center; font-style: italic; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid rgba(212, 175, 55, 0.2); }
-        .back-detail { font-size: 0.8rem; color: rgba(250, 248, 240, 0.7); line-height: 1.6; }
-        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px; width: 100%; }
-        .stat-item { background: rgba(0, 0, 0, 0.2); border-radius: 8px; padding: 10px 6px; text-align: center; border: 1px solid rgba(212, 175, 55, 0.1); }
-        .stat-label { font-size: 0.65rem; color: rgba(250, 248, 240, 0.5); margin-bottom: 3px; }
-        .stat-value { font-size: 0.85rem; font-weight: 600; color: var(--gold-light); }
-        .poem-section { background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(212, 175, 55, 0.15); border-radius: 12px; padding: 16px; margin-bottom: 18px; text-align: center; }
-        .poem-title { font-size: 0.75rem; color: var(--gold); margin-bottom: 10px; letter-spacing: 2px; }
-        .poem-text { font-size: 1rem; color: var(--cream); line-height: 1.8; font-weight: 500; }
-        .readings-section { margin-bottom: 18px; }
-        .readings-title { font-size: 0.9rem; color: var(--gold); margin-bottom: 12px; text-align: center; letter-spacing: 2px; }
-        .reading-item { background: rgba(0, 0, 0, 0.15); border-left: 3px solid var(--gold); border-radius: 0 10px 10px 0; padding: 12px 14px; margin-bottom: 10px; }
-        .reading-header { display: flex; align-items: center; margin-bottom: 5px; }
-        .reading-icon { font-size: 0.95rem; margin-right: 7px; }
-        .reading-label { font-size: 0.8rem; font-weight: 600; color: var(--gold-light); }
-        .reading-text { font-size: 0.8rem; color: rgba(250, 248, 240, 0.8); line-height: 1.5; }
-        .lucky-section { margin-bottom: 18px; }
-        .lucky-title { font-size: 0.85rem; color: var(--gold); margin-bottom: 10px; text-align: center; letter-spacing: 2px; }
-        .lucky-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-        .lucky-item { background: rgba(0, 0, 0, 0.15); border-radius: 8px; padding: 8px 4px; text-align: center; }
-        .lucky-label { font-size: 0.6rem; color: rgba(250, 248, 240, 0.5); margin-bottom: 3px; }
-        .lucky-value { font-size: 0.8rem; font-weight: 600; color: var(--gold-light); }
-        .action-buttons { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 18px; }
-        .btn-icon { flex: 1; min-width: calc(50% - 4px); padding: 11px 8px; font-size: 0.85rem; }
-        .btn-save { background: linear-gradient(135deg, #9b59b6, #8e44ad); color: white; }
-        .btn-save:hover { background: linear-gradient(135deg, #8e44ad, #7d3c98); }
-        .btn-copy { background: linear-gradient(135deg, #3498db, #2980b9); color: white; }
-        .btn-copy:hover { background: linear-gradient(135deg, #2980b9, #2471a3); }
-        .btn-share-wechat { background: linear-gradient(135deg, #07c160, #06ad56); color: white; }
-        .btn-share-wechat:hover { background: linear-gradient(135deg, #06ad56, #05a14a); }
-        .btn-home { background: rgba(255, 255, 255, 0.1); color: var(--cream); border: 1px solid rgba(212, 175, 55, 0.3); }
-        .btn-home:hover { background: rgba(255, 255, 255, 0.2); }
-        .footer { text-align: center; padding: 30px 0; opacity: 0.5; font-size: 0.8rem; }
         
-        /* 底部固定操作栏 */
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; width: 100%; }
+        .stat-item { background: rgba(0, 0, 0, 0.2); border-radius: 8px; padding: 8px 4px; text-align: center; border: 1px solid rgba(212, 175, 55, 0.1); }
+        .stat-label { font-size: 0.6rem; color: rgba(250, 248, 240, 0.5); margin-bottom: 2px; }
+        .stat-value { font-size: 0.8rem; font-weight: 600; color: var(--gold-light); }
+        
+        .back-title { font-size: 0.9rem; color: var(--gold); margin-bottom: 10px; text-align: center; letter-spacing: 2px; }
+        .back-poem { font-size: 0.9rem; color: var(--cream); line-height: 1.6; text-align: center; font-style: italic; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid rgba(212, 175, 55, 0.2); }
+        .back-detail { font-size: 0.75rem; color: rgba(250, 248, 240, 0.7); line-height: 1.5; }
+        
+        .poem-section { background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(212, 175, 55, 0.15); border-radius: 12px; padding: 14px; margin-bottom: 14px; text-align: center; }
+        .poem-title { font-size: 0.75rem; color: var(--gold); margin-bottom: 8px; letter-spacing: 2px; }
+        .poem-text { font-size: 0.95rem; color: var(--cream); line-height: 1.7; font-weight: 500; }
+        
+        .readings-section { margin-bottom: 14px; }
+        .readings-title { font-size: 0.85rem; color: var(--gold); margin-bottom: 10px; text-align: center; letter-spacing: 2px; }
+        .reading-item { background: rgba(0, 0, 0, 0.15); border-left: 3px solid var(--gold); border-radius: 0 10px 10px 0; padding: 10px 12px; margin-bottom: 8px; }
+        .reading-header { display: flex; align-items: center; margin-bottom: 4px; }
+        .reading-icon { font-size: 0.9rem; margin-right: 6px; }
+        .reading-label { font-size: 0.75rem; font-weight: 600; color: var(--gold-light); }
+        .reading-text { font-size: 0.75rem; color: rgba(250, 248, 240, 0.8); line-height: 1.4; }
+        
+        .lucky-section { margin-bottom: 14px; }
+        .lucky-title { font-size: 0.8rem; color: var(--gold); margin-bottom: 8px; text-align: center; letter-spacing: 2px; }
+        .lucky-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+        .lucky-item { background: rgba(0, 0, 0, 0.15); border-radius: 6px; padding: 6px 2px; text-align: center; }
+        .lucky-label { font-size: 0.55rem; color: rgba(250, 248, 240, 0.5); margin-bottom: 2px; }
+        .lucky-value { font-size: 0.75rem; font-weight: 600; color: var(--gold-light); }
+        
+        /* 底部操作栏 */
         .bottom-bar { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(26, 10, 46, 0.98), rgba(26, 10, 46, 0.9)); border-top: 1px solid rgba(212, 175, 55, 0.2); padding: 12px 20px 20px; z-index: 100; backdrop-filter: blur(10px); }
         .bottom-bar.active { display: flex; gap: 10px; }
         .bottom-bar .btn { padding: 12px 16px; font-size: 0.9rem; }
@@ -124,32 +134,25 @@
         .share-modal.active { display: flex; align-items: center; justify-content: center; }
         .share-modal-content { background: linear-gradient(145deg, rgba(45, 27, 78, 0.95), rgba(26, 10, 46, 0.98)); border: 2px solid var(--gold); border-radius: 20px; padding: 24px; max-width: 340px; width: 100%; text-align: center; }
         .share-modal-title { font-size: 1.4rem; font-weight: 700; background: linear-gradient(135deg, var(--gold-light), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 4px; }
-        .share-modal-subtitle { font-size: 0.75rem; color: rgba(250, 248, 240, 0.6); margin-bottom: 18px; }
+        .share-modal-subtitle { font-size: 0.75rem; color: rgba(250, 248, 240, 0.6); margin-bottom: 16px; }
         
-        /* 分享弹窗内的卡罗牌 */
-        .share-modal-tarot { margin-bottom: 16px; }
-        .share-modal-tarot .flip-card { height: 160px; cursor: pointer; }
-        .share-modal-tarot .flip-card-front, .share-modal-tarot .flip-card-back { padding: 15px; }
-        .share-modal-tarot .tarot-symbol { font-size: 2rem; margin-bottom: 8px; }
-        .share-modal-tarot .tarot-name { font-size: 0.9rem; }
+        .share-modal-tarot { margin-bottom: 14px; }
+        .share-modal-tarot .flip-card { height: 140px; cursor: pointer; }
+        .share-modal-tarot .flip-card-front, .share-modal-tarot .flip-card-back { padding: 12px; }
+        .share-modal-tarot .tarot-symbol { font-size: 1.8rem; margin-bottom: 6px; }
+        .share-modal-tarot .tarot-name { font-size: 0.85rem; }
         .share-modal-tarot .flip-hint, .share-modal-tarot .stats-grid { display: none; }
         
-        .share-modal-level { font-size: 1.4rem; font-weight: 700; margin-bottom: 10px; }
-        .share-modal-poem { font-size: 0.85rem; color: var(--cream); line-height: 1.5; font-style: italic; margin-bottom: 16px; }
+        .share-modal-level { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
+        .share-modal-poem { font-size: 0.8rem; color: var(--cream); line-height: 1.5; font-style: italic; margin-bottom: 14px; }
         
         .share-modal-actions { display: flex; gap: 10px; }
-        .share-modal-actions .btn { padding: 10px 14px; font-size: 0.8rem; }
+        .share-modal-actions .btn { padding: 10px 12px; font-size: 0.8rem; }
         .btn-save-img { background: linear-gradient(135deg, #9b59b6, #8e44ad); color: white; }
         .btn-save-img:hover { background: linear-gradient(135deg, #8e44ad, #7d3c98); }
         .btn-close-modal { background: rgba(255, 255, 255, 0.1); color: var(--cream); border: 1px solid rgba(212, 175, 55, 0.3); }
         
-        /* 详情页返回按钮 */
-        .back-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 8px; color: var(--gold-light); font-size: 0.85rem; cursor: pointer; margin-bottom: 15px; transition: all 0.3s ease; }
-        .back-btn:hover { background: rgba(255, 255, 255, 0.2); }
-        
-        /* 页面切换 */
-        .page { display: none; min-height: 100vh; }
-        .page.active { display: block; }
+        .footer { text-align: center; padding: 20px 0; opacity: 0.5; font-size: 0.75rem; }
         
         @media (max-width: 480px) {
             .container { padding: 15px; }
@@ -157,12 +160,9 @@
             .stats-grid { grid-template-columns: 1fr; }
             .lucky-grid { grid-template-columns: repeat(2, 1fr); }
             .action-buttons { flex-direction: column; }
-            .btn-icon { min-width: 100%; }
-            .flip-card { height: 240px; }
-            .share-modal-content { padding: 20px; }
-            .share-modal-actions { flex-direction: column; }
             .bottom-bar { padding: 10px 15px 18px; }
-            .bottom-bar .btn { padding: 12px 14px; font-size: 0.85rem; }
+            .share-modal-content { padding: 18px; }
+            .share-modal-actions { flex-direction: column; }
         }
     </style>
 </head>
@@ -170,27 +170,39 @@
     <div class="stars" id="stars"></div>
     <div class="nebula"></div>
     <div class="container">
-        <section id="inputSection" class="page active">
+        <!-- 首页 -->
+        <section id="homePage" class="page active">
             <div class="header">
                 <h1 class="title">🎋 天选上上签</h1>
                 <p class="subtitle">✦ 今日运势占卜 ✦</p>
             </div>
-            <div class="card showcase" id="showcase">
-                <div class="showcase-title">✦ 他人的今日运势 ✦</div>
-                <div class="showcase-list" id="showcaseList"></div>
-            </div>
-            <div class="card input-section">
-                <a href="https://xianyu.咸鱼商品链接占位符" target="_blank" class="btn-get-invite">🎫 获取邀请码</a>
-                <div class="input-group">
-                    <label class="input-label">请输入邀请码</label>
-                    <input type="text" class="input-field" id="inviteCode" placeholder="输入邀请码" maxlength="20">
-                </div>
+            
+            <!-- 操作区：主按钮 -->
+            <div class="card action-section">
                 <button class="btn btn-primary" id="drawBtn">开启命运之旅</button>
                 <p class="error-msg" id="errorMsg"></p>
                 <p class="success-msg" id="successMsg"></p>
             </div>
+            
+            <!-- 邀请码区域（验证通过后隐藏） -->
+            <div class="card invite-section" id="inviteSection">
+                <a href="https://xianyu.taobao.com/item?id=咸鱼商品链接占位符" target="_blank" class="btn-get-invite">🎫 获取邀请码</a>
+                <div class="input-group">
+                    <label class="input-label">请输入邀请码</label>
+                    <input type="text" class="input-field" id="inviteCode" placeholder="输入邀请码" maxlength="20">
+                </div>
+            </div>
+            
+            <!-- 案例展示 -->
+            <div class="card showcase">
+                <div class="showcase-title">✦ 他人的今日运势 ✦</div>
+                <div class="showcase-list" id="showcaseList"></div>
+            </div>
+            
             <div class="footer">星辰指引 · 仅供参考 · 娱乐而已</div>
         </section>
+        
+        <!-- Loading -->
         <section class="loading page" id="loading">
             <div class="loading-text">宇宙正在为你占卜...</div>
             <div class="loading-dots">
@@ -199,15 +211,18 @@
                 <div class="loading-dot"></div>
             </div>
         </section>
-        <section class="result-section page" id="resultSection">
+        
+        <!-- 结果页 -->
+        <section class="result-section page" id="resultPage">
             <div class="card">
-                <div class="fortune-header">
-                    <div class="fortune-level" id="levelBadge">大吉</div>
-                    <div class="fortune-sub">今日运势</div>
+                <div class="result-header">
+                    <div class="result-title">🎋 今日运势</div>
                 </div>
+                
                 <div class="flip-card-container">
                     <div class="flip-card" id="flipCard" onclick="flipCard()">
                         <div class="flip-card-front">
+                            <div class="fortune-level" id="levelBadge">大吉</div>
                             <div class="tarot-symbol" id="tarotSymbol">🌟</div>
                             <div class="tarot-name" id="tarotName">愚人</div>
                             <div class="tarot-label">tarot</div>
@@ -219,148 +234,111 @@
                             <div class="flip-hint">点击卡片查看详细解读 ✦</div>
                         </div>
                         <div class="flip-card-back">
-                            <div class="back-title">✦ 签诗详解 ✦</div>
-                            <div class="back-poem" id="backPoem">紫气东来映祥云，贵人相助万事成。</div>
+                            <div class="back-title" id="backTitle">✦ 签诗详解 ✦</div>
+                            <div class="back-poem" id="backPoem">紫气东来映祥云...</div>
                             <div class="back-detail" id="backDetail"></div>
                         </div>
                     </div>
                 </div>
+                
                 <div class="poem-section">
                     <div class="poem-title">✦ 签诗 ✦</div>
                     <div class="poem-text" id="poem">今日诸事大吉...</div>
                 </div>
+                
+                <div class="readings-section">
+                    <div class="readings-title">✦ 详细解读 ✦</div>
+                    <div class="reading-item">
+                        <div class="reading-header"><span class="reading-icon">💼</span><span class="reading-label">事业</span></div>
+                        <div class="reading-text" id="career">...</div>
+                    </div>
+                    <div class="reading-item">
+                        <div class="reading-header"><span class="reading-icon">💕</span><span class="reading-label">爱情</span></div>
+                        <div class="reading-text" id="love">...</div>
+                    </div>
+                    <div class="reading-item">
+                        <div class="reading-header"><span class="reading-icon">❤️</span><span class="reading-label">健康</span></div>
+                        <div class="reading-text" id="health">...</div>
+                    </div>
+                    <div class="reading-item">
+                        <div class="reading-header"><span class="reading-icon">💰</span><span class="reading-label">财运</span></div>
+                        <div class="reading-text" id="fortune">...</div>
+                    </div>
+                </div>
+                
                 <div class="lucky-section">
                     <div class="lucky-title">✦ 今日幸运 ✦</div>
                     <div class="lucky-grid">
-                        <div class="lucky-item"><div class="lucky-label">幸运色</div><div class="lucky-value" id="luckyColor">金色</div></div>
-                        <div class="lucky-item"><div class="lucky-label">幸运数字</div><div class="lucky-value" id="luckyNum">8</div></div>
-                        <div class="lucky-item"><div class="lucky-label">吉时</div><div class="lucky-value" id="luckyTime">辰时</div></div>
-                        <div class="lucky-item"><div class="lucky-label">方位</div><div class="lucky-value" id="luckyDir">东南</div></div>
+                        <div class="lucky-item"><div class="lucky-label">方位</div><div class="lucky-value" id="luckyDirection">东南</div></div>
+                        <div class="lucky-item"><div class="lucky-label">颜色</div><div class="lucky-value" id="luckyColor">金色</div></div>
+                        <div class="lucky-item"><div class="lucky-label">数字</div><div class="lucky-value" id="luckyNumber">7</div></div>
+                        <div class="lucky-item"><div class="lucky-label">时辰</div><div class="lucky-value" id="luckyTime">巳时</div></div>
                     </div>
                 </div>
-                <div class="readings-section">
-                    <div class="readings-title">✦ 详细解读 ✦</div>
-                    <div class="reading-item"><div class="reading-header"><span class="reading-icon">💼</span><span class="reading-label">事业</span></div><div class="reading-text" id="career">...</div></div>
-                    <div class="reading-item"><div class="reading-header"><span class="reading-icon">💕</span><span class="reading-label">爱情</span></div><div class="reading-text" id="love">...</div></div>
-                    <div class="reading-item"><div class="reading-header"><span class="reading-icon">❤️</span><span class="reading-label">健康</span></div><div class="reading-text" id="health">...</div></div>
-                    <div class="reading-item"><div class="reading-header"><span class="reading-icon">💰</span><span class="reading-label">财运</span></div><div class="reading-text" id="fortune">...</div></div>
-                    <div class="reading-item"><div class="reading-header"><span class="reading-icon">📚</span><span class="reading-label">学业</span></div><div class="reading-text" id="study">...</div></div>
-                </div>
-                <div class="action-buttons">
-                    <button class="btn btn-icon btn-save" onclick="saveImage()">💾 保存图片</button>
-                    <button class="btn btn-icon btn-copy" onclick="copyLink()">🔗 复制链接</button>
-                    <button class="btn btn-icon btn-share-wechat" onclick="shareWechat()">💬 分享微信</button>
-                    <button class="btn btn-icon btn-home" onclick="goHome()">🔄 再抽一次</button>
-                </div>
             </div>
-            <div class="footer">星辰指引 · 仅供参考 · 娱乐而已</div>
-        </section>
-        
-        <!-- 详情页（他人运势） -->
-        <section id="detailPage" class="page">
-            <button class="back-btn" onclick="goHome()">← 返回主页</button>
-            <div class="header">
-                <h1 class="title" style="font-size:1.5rem;">他人的今日运势</h1>
-            </div>
-            <div class="card">
-                <div class="fortune-header">
-                    <div class="fortune-level" id="detailLevelBadge">大吉</div>
-                    <div class="fortune-sub">今日运势</div>
-                </div>
-                <div class="flip-card-container">
-                    <div class="flip-card" id="detailFlipCard" onclick="flipDetailCard()">
-                        <div class="flip-card-front">
-                            <div class="tarot-symbol" id="detailTarotSymbol">🌟</div>
-                            <div class="tarot-name" id="detailTarotName">愚人</div>
-                            <div class="tarot-label">tarot</div>
-                            <div class="stats-grid">
-                                <div class="stat-item"><div class="stat-label">五行</div><div class="stat-value" id="detailElement">木</div></div>
-                                <div class="stat-item"><div class="stat-label">幸运星座</div><div class="stat-value" id="detailZodiac">天秤座</div></div>
-                                <div class="stat-item"><div class="stat-label">匹配度</div><div class="stat-value" id="detailMatchRate">98.5%</div></div>
-                            </div>
-                            <div class="flip-hint">点击卡片查看详细解读 ✦</div>
-                        </div>
-                        <div class="flip-card-back">
-                            <div class="back-title">✦ 签诗详解 ✦</div>
-                            <div class="back-poem" id="detailBackPoem">紫气东来映祥云，贵人相助万事成。</div>
-                            <div class="back-detail" id="detailBackDetail"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="poem-section">
-                    <div class="poem-title">✦ 签诗 ✦</div>
-                    <div class="poem-text" id="detailPoem">今日诸事大吉...</div>
-                </div>
-                <div class="lucky-section">
-                    <div class="lucky-title">✦ 今日幸运 ✦</div>
-                    <div class="lucky-grid">
-                        <div class="lucky-item"><div class="lucky-label">幸运色</div><div class="lucky-value" id="detailLuckyColor">金色</div></div>
-                        <div class="lucky-item"><div class="lucky-label">幸运数字</div><div class="lucky-value" id="detailLuckyNum">8</div></div>
-                        <div class="lucky-item"><div class="lucky-label">吉时</div><div class="lucky-value" id="detailLuckyTime">辰时</div></div>
-                        <div class="lucky-item"><div class="lucky-label">方位</div><div class="lucky-value" id="detailLuckyDir">东南</div></div>
-                    </div>
-                </div>
-                <div class="readings-section">
-                    <div class="readings-title">✦ 详细解读 ✦</div>
-                    <div class="reading-item"><div class="reading-header"><span class="reading-icon">💼</span><span class="reading-label">事业</span></div><div class="reading-text" id="detailCareer">...</div></div>
-                    <div class="reading-item"><div class="reading-header"><span class="reading-icon">💕</span><span class="reading-label">爱情</span></div><div class="reading-text" id="detailLove">...</div></div>
-                    <div class="reading-item"><div class="reading-header"><span class="reading-icon">❤️</span><span class="reading-label">健康</span></div><div class="reading-text" id="detailHealth">...</div></div>
-                    <div class="reading-item"><div class="reading-header"><span class="reading-icon">💰</span><span class="reading-label">财运</span></div><div class="reading-text" id="detailFortune">...</div></div>
-                    <div class="reading-item"><div class="reading-header"><span class="reading-icon">📚</span><span class="reading-label">学业</span></div><div class="reading-text" id="detailStudy">...</div></div>
-                </div>
-            </div>
+            
             <div class="footer">星辰指引 · 仅供参考 · 娱乐而已</div>
         </section>
     </div>
     
-    <!-- 底部固定操作栏 -->
+    <!-- 底部操作栏 -->
     <div class="bottom-bar" id="bottomBar">
-        <button class="btn btn-share-fixed" onclick="openShareModal()">📤 分享运势</button>
+        <button class="btn btn-share-fixed" onclick="shareFortune()">📤 分享好友</button>
         <button class="btn btn-retry-fixed" onclick="goHome()">🔄 再抽一次</button>
     </div>
     
+    <!-- 分享弹窗 -->
     <div class="share-modal" id="shareModal">
-        <div class="share-modal-content" id="shareContent">
+        <div class="share-modal-content">
             <div class="share-modal-title">🎋 天选上上签</div>
             <div class="share-modal-subtitle">今日运势占卜</div>
             <div class="share-modal-tarot">
                 <div class="flip-card" id="shareFlipCard" onclick="flipShareCard()">
                     <div class="flip-card-front">
+                        <div class="share-modal-level" id="shareLevel">大吉</div>
                         <div class="tarot-symbol" id="shareTarotSymbol">🌟</div>
                         <div class="tarot-name" id="shareTarotName">愚人</div>
                     </div>
                     <div class="flip-card-back">
-                        <div class="back-poem" id="shareBackPoem">紫气东来映祥云，贵人相助万事成。</div>
-                        <div class="back-detail" id="shareBackDetail"></div>
+                        <div class="back-poem" id="sharePoem">紫气东来映祥云...</div>
                     </div>
                 </div>
             </div>
-            <div class="share-modal-level" id="shareLevel">大吉</div>
-            <div class="share-modal-poem" id="sharePoem">紫气东来映祥云...</div>
             <div class="share-modal-actions">
-                <button class="btn btn-save-img" onclick="saveShareImage()">💾 保存图片</button>
+                <button class="btn btn-save-img" onclick="saveCardImage()">💾 保存图片</button>
                 <button class="btn btn-close-modal" onclick="closeShareModal()">关闭</button>
             </div>
         </div>
     </div>
+
     <script>
         const API_BASE = 'https://invite-code-service.vercel.app';
-        const fortunes = [
-            { level: "大吉", element: "木", zodiac: "天秤座", tarot: "愚人", tarotSymbol: "0", poem: "紫气东来映祥云，贵人相助万事成。奇遇频生机遇至，功成名就耀门庭。", career: "今日事业运势极佳！有贵人相助，工作中的难题迎刃而解。团队合作顺畅，可能收到上级表扬或晋升机会。创意思维活跃，适合开展新项目。", love: "爱情运旺象！单身者有机会在社交场合遇到心动的对象，对方可能与你有共同的兴趣爱好。已有伴侣者感情升温，彼此信任加深。", health: "身心状态极佳！精力充沛，适合运动锻炼。但需注意休息，避免过度劳累。多喝水，保持充足睡眠。", fortune: "财运亨通！可能有意外之财或投资收益。投资理财方向准确，适合把握机会。正财收入稳定，偏财运佳。", study: "学业运佳！思维敏捷，记忆力增强。适合学习新知识或准备考试。有意外收获，可能获得奖学金或荣誉。", luckyColor: "金色", luckyNum: "8", luckyTime: "辰时", luckyDir: "东南", detail: "此签主吉，万事皆宜。紫气东来乃祥瑞之兆，预示着今日将有好事发生。贵人运尤其旺盛，无论做什么都有暗中帮助。宜把握时机，勇往直前。" },
-            { level: "大吉", element: "火", zodiac: "白羊座", tarot: "太阳", tarotSymbol: "☀️", poem: "红日当空照金瓦，祥光普照满天涯。心想事成无阻碍，春风得意步金銮。", career: "事业腾飞之日！创意思维活跃，适合突破瓶颈。你的热情会感染周围同事，获得大家的支持与认可。适合领导项目或开展新业务。", love: "激情四射！单身者勇敢表白成功的几率很高。恋爱中的人可能会迈入新阶段，如见家长或求婚。", health: "活力满满！但运动时需注意安全，避免受伤。适合进行户外活动。精力旺盛，可以尝试新的运动方式。", fortune: "财源广进！正财偏财皆有收获。可能会收到奖金或礼物。投资理财收益颇丰。", study: "学业大旺！理解力强，效率倍增。考试或考核都能取得优异成绩。适合深入研究感兴趣的领域。", luckyColor: "红色", luckyNum: "3", luckyTime: "午时", luckyDir: "南", detail: "太阳高照，阳气十足。此签主吉，象征着光明与希望。凡事皆可成就心想之事。宜把握当下，积极行动。" },
-            { level: "中吉", element: "水", zodiac: "双子座", tarot: "月亮", tarotSymbol: "🌙", poem: "清风徐来送吉祥，祸去福来运渐昌。稳中求进方为上，细水长流福寿长。", career: "平稳推进！工作按部就班，适合处理日常事务。沟通能力突出，商务谈判或有收获。注意细节，避免因小失大。", love: "渐入佳境！与伴侣相处愉快，误会解除。单身者可能遇到聊得来的对象。", health: "基本良好！偶有疲惫感，注意调节。适合瑜伽、冥想等舒缓运动。保持规律作息很重要。", fortune: "收支平衡！收入稳定，但开销也相应增加。投资需谨慎，不宜冒险。", study: "学业平稳！按部就班复习巩固即可。适合温故知新，回顾之前学过的知识。", luckyColor: "蓝色", luckyNum: "5", luckyTime: "未时", luckyDir: "东北", detail: "月朗星稀，宁静致远。此签主中吉，宜稳扎稳打。不可急功近利，需循序渐进。细水长流，方得长久。" },
-            { level: "中吉", element: "金", zodiac: "处女座", tarot: "审判", tarotSymbol: "⚖️", poem: "黄金铺地照华堂，付出终得报吉祥。审时度势稳步走，好运相随福无疆。", career: "付出有回报！之前的努力开始显现成果。适合整理工作、优化流程。可能会收到工作相关的好消息。", love: "回归理性！经过深思熟虑，更懂得珍惜眼前人。单身者对择偶标准更加明确。", health: "注重保养！身体状态不错，但需要注意养生。保持良好的生活作息习惯。", fortune: "正财运佳！工资收入稳定，可能获得奖金或礼物。之前的投资开始有回报。", study: "学业进步！之前的积累开始显现成果。考试或考核有望取得好成绩。", luckyColor: "白色", luckyNum: "6", luckyTime: "申时", luckyDir: "西", detail: "审判之日，善恶有报。此签主中吉，象征着公正与回报。之前的付出终将得到认可。" },
-            { level: "小吉", element: "土", zodiac: "摩羯座", tarot: "塔", tarotSymbol: "🗼", poem: "浮云遮日终有时，逆境之后是坦途。稳扎稳打步步营，否极泰来福自至。", career: "遇到挑战！工作中可能遭遇困难或变动，但这是成长的机会。保持冷静，寻求解决方案。危机也是转机。", love: "需要沟通！与伴侣可能有误会或分歧，及时沟通很重要。单身者可能会有一些挫折。", health: "小心谨慎！注意安全，避免意外伤害。身体偶有不适，及时就医检查。", fortune: "量入为出！财务状况紧张，需要控制开支。投资理财风险增大。", study: "学业调整！可能遇到瓶颈，需要调整学习方法或状态。", luckyColor: "灰色", luckyNum: "4", luckyTime: "酉时", luckyDir: "西北", detail: "此签先凶后吉，象征着破旧立新。眼前困难只是暂时的，雨过天晴后必有彩虹。" },
-            { level: "小吉", element: "金", zodiac: "水瓶座", tarot: "节制", tarotSymbol: "🏺", poem: "细水长流缓缓行，中庸之道保平安。知足常乐随遇安，平稳度日赛神仙。", career: "按部就班！工作平稳无大波澜，适合处理常规任务。不求有功，但求无过。", love: "平淡是真！与伴侣相处如温水，偶有小确幸。单身者桃花运一般。", health: "维持良好！身体状态平稳，无大碍。保持现有养生习惯即可。", fortune: "收支相抵！收入与支出基本持平，无太多盈余。理财宜稳健。", study: "学业平顺！按计划推进即可，不会有太大波澜。", luckyColor: "银色", luckyNum: "7", luckyTime: "戌时", luckyDir: "西北", detail: "此签主平安顺利，宜中庸之道。不偏不倚，循序渐进。知足常乐方为上策。" },
-            { level: "吉", element: "水", zodiac: "双鱼座", tarot: "命运之轮", tarotSymbol: "🎡", poem: "时来运转各有期，福祸相依莫强求。随缘自适不强求，淡泊明志乐悠悠。", career: "等待时机！目前处于积累阶段，不宜冒进。做好准备工作，等待机会降临。", love: "随缘自在！不强求，不勉强。单身者享受当下，已婚者珍惜现有。", health: "顺其自然！身体没有大问题，保持良好心态最重要。", fortune: "静待时机！目前不是最佳投资时机，保持观望态度。", study: "积累阶段！目前是积累知识的好时机，为后续突破做准备。", luckyColor: "紫色", luckyNum: "2", luckyTime: "亥时", luckyDir: "北", detail: "命运之轮转动，好运即将到来。目前只需做好积累，静待时机成熟。" },
-            { level: "末吉", element: "木", zodiac: "射手座", tarot: "倒吊人", tarotSymbol: "🙃", poem: "船到桥头自然直，风雨之后见彩虹。静心等待时机至，好运自然来相随。", career: "调整期！适合沉淀学习，提升专业技能。表面看似停滞，实则是在积累能量。", love: "考验期！与伴侣经历小波折后感情更加稳固。单身者可能还在等待阶段。", health: "需要休息！身心略有疲惫感，建议适当放松。", fortune: "静观其变！投资理财宜保守，不宜冒进。", study: "反思期！适合回顾过去的学习，总结经验教训。", luckyColor: "绿色", luckyNum: "1", luckyTime: "子时", luckyDir: "东北", detail: "此签象征着蛰伏与等待。正如倒吊人所示，有时候需要换一种角度看问题。" }
-        ];
-        const showcaseFortunes = fortunes.slice(0, 4);
-        let currentFortune = null;
         let validated = false;
+        let currentFortune = null;
+        
+        // 运势数据
+        const fortunes = [
+            { level: "大吉", element: "木", zodiac: "天秤座", tarot: "愚人", tarotSymbol: "0", poem: "紫气东来映祥云，贵人相助万事成。奇遇频生机遇至，功成名就耀门庭。", career: "今日事业运势极佳！有贵人相助，工作中的难题迎刃而解。团队合作顺畅，可能收到上级表扬或晋升机会。", love: "爱情运旺象！单身者有机会在社交场合遇到心动的对象，已有伴侣者感情升温，彼此信任加深。", health: "身心状态极佳！精力充沛，适合运动锻炼。但需注意休息，避免过度劳累。", fortune: "财运亨通！可能有意外之财或投资收益。投资理财方向准确，适合把握机会。", backDetail: "宇宙在今日为你开启了幸运之门。保持开放的心态，接受意想不到的惊喜。你的真诚和努力终将得到回报。" },
+            { level: "大吉", element: "火", zodiac: "白羊座", tarot: "太阳", tarotSymbol: "☀️", poem: "红日当空照金瓦，祥光普照满天涯。心想事成无阻碍，春风得意步金銮。", career: "事业腾飞之日！创意思维活跃，适合突破瓶颈。你的热情会感染周围同事，获得大家的支持与认可。", love: "激情四射！单身者勇敢表白成功的几率很高。恋爱中的人可能会迈入新阶段。", health: "活力满满！但运动时需注意安全，避免受伤。适合进行户外活动。", fortune: "财源广进！正财偏财皆有收获。可能会收到奖金或礼物。", backDetail: "太阳的光芒照亮你的前路。这是一个充满希望和活力的日子。把握当下，让激情引领你前行。" },
+            { level: "中吉", element: "水", zodiac: "双子座", tarot: "月亮", tarotSymbol: "🌙", poem: "清风徐来送吉祥，祸去福来运渐昌。稳中求进方为上，细水长流福寿长。", career: "平稳推进！工作按部就班，适合处理日常事务。沟通能力突出，商务谈判或有收获。", love: "渐入佳境！与伴侣相处愉快，误会解除。单身者可能遇到聊得来的对象。", health: "基本良好！偶有疲惫感，注意调节。适合瑜伽、冥想等舒缓运动。", fortune: "收支平衡！收入稳定，但开销也相应增加。投资需谨慎。", backDetail: "月亮的光芒柔和而宁静。保持内心的平静稳扎稳打，你想要的终会到来。" },
+            { level: "中吉", element: "金", zodiac: "处女座", tarot: "审判", tarotSymbol: "⚖️", poem: "黄金铺地照华堂，付出终得报吉祥。审时度势稳步走，好运相随福无疆。", career: "付出有回报！之前的努力开始显现成果。适合整理工作、优化流程。", love: "回归理性！经过深思熟虑，更懂得珍惜眼前人。单身者对择偶标准更加明确。", health: "注重保养！身体状态不错，但需要注意养生。保持良好的生活作息习惯。", fortune: "正财运佳！工资收入稳定，可能获得奖金或礼物。", backDetail: "审判的时刻来临，你的付出终将得到认可。这是一个反思与收获的日子。" },
+            { level: "小吉", element: "土", zodiac: "摩羯座", tarot: "塔", tarotSymbol: "🗼", poem: "浮云遮日终有时，逆境之后是坦途。稳扎稳打步步营，否极泰来福自至。", career: "遇到挑战！工作中可能遭遇困难或变动，但这是成长的机会。保持冷静，寻求解决方案。", love: "需要沟通！与伴侣可能有误会或分歧，及时沟通很重要。", health: "小心谨慎！注意安全，避免意外伤害。身体偶有不适，及时就医检查。", fortune: "量入为出！财务状况紧张，需要控制开支。投资理财风险增大。", backDetail: "暴风雨后的宁静即将来临。当前的困境是蜕变的契机，坚持下去就会看到曙光。" },
+            { level: "小吉", element: "金", zodiac: "水瓶座", tarot: "节制", tarotSymbol: "🏺", poem: "细水长流缓缓行，中庸之道保平安。知足常乐随遇安，平稳度日赛神仙。", career: "按部就班！工作平稳无大波澜，适合处理常规任务。不求有功，但求无过。", love: "平淡是真！与伴侣相处如温水，偶有小确幸。单身者桃花运一般。", health: "维持良好！身体状态平稳，无大碍。保持现有养生习惯即可。", fortune: "收支相抵！收入与支出基本持平，无太多盈余。理财宜稳健。", backDetail: "节制带来平衡。学会在欲望和理性之间找到平衡点，这是长久之道。" },
+            { level: "吉", element: "水", zodiac: "双鱼座", tarot: "命运之轮", tarotSymbol: "🎡", poem: "时来运转各有期，福祸相依莫强求。随缘自适不强求，淡泊明志乐悠悠。", career: "等待时机！目前处于积累阶段，不宜冒进。做好准备工作，等待机会降临。", love: "随缘自在！不强求，不勉强。单身者享受当下，已婚者珍惜现有。", health: "顺其自然！身体没有大问题，保持良好心态最重要。", fortune: "静待时机！目前不是最佳投资时机，保持观望态度。", backDetail: "命运之轮正在转动。保持耐心，好运正在来的路上。不要急于求成。" },
+            { level: "末吉", element: "木", zodiac: "射手座", tarot: "倒吊人", tarotSymbol: "🙃", poem: "船到桥头自然直，风雨之后见彩虹。静心等待时机至，好运自然来相随。", career: "调整期！适合沉淀学习，提升专业技能。表面看似停滞，实则是在积累能量。", love: "考验期！与伴侣经历小波折后感情更加稳固。单身者可能还在等待阶段。", health: "需要休息！身心略有疲惫感，建议适当放松。", fortune: "静观其变！投资理财宜保守，不宜冒进。", backDetail: "倒吊人象征着暂停和反思。放慢脚步，给自己一个喘息的机会。调整后再出发。" }
+        ];
+        
+        // 初始化
+        function init() {
+            generateStars();
+            loadInviteCode();
+            renderShowcase();
+        }
+        
+        // 生成星星背景
         function generateStars() {
             const container = document.getElementById('stars');
-            for (let i = 0; i < 100; i++) {
+            for (let i = 0; i < 80; i++) {
                 const star = document.createElement('div');
                 star.className = 'star';
                 const size = Math.random() * 2 + 1;
@@ -374,29 +352,77 @@
                 container.appendChild(star);
             }
         }
+        
+        // 加载邀请码
+        function loadInviteCode() {
+            const savedCode = localStorage.getItem('inviteCode');
+            if (savedCode) {
+                validateSavedCode(savedCode);
+            } else {
+                document.getElementById('inviteSection').classList.add('active');
+            }
+        }
+        
+        // 验证保存的邀请码
+        async function validateSavedCode(code) {
+            try {
+                const res = await fetch(API_BASE + '/api/invite/validate', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({code: code})
+                });
+                const data = await res.json();
+                if (data.valid) {
+                    validated = true;
+                    document.getElementById('inviteSection').classList.remove('active');
+                } else {
+                    localStorage.removeItem('inviteCode');
+                    document.getElementById('inviteSection').classList.add('active');
+                }
+            } catch (e) {
+                document.getElementById('inviteSection').classList.add('active');
+            }
+        }
+        
+        // 渲染案例
         function renderShowcase() {
             const list = document.getElementById('showcaseList');
-            showcaseFortunes.forEach((f, i) => {
+            const shuffled = [...fortunes].sort(() => Math.random() - 0.5).slice(0, 3);
+            shuffled.forEach(f => {
                 const item = document.createElement('div');
                 item.className = 'showcase-item';
-                item.onclick = () => showDetailPage(f);
+                item.onclick = () => showResult(f);
                 let levelClass = f.level === '大吉' ? 'level-daji' : (f.level === '中吉' ? 'level-zhongji' : 'level-xiaoji');
-                item.innerHTML = '<div class="showcase-symbol">' + f.tarotSymbol + '</div><div class="showcase-info"><div class="showcase-level ' + levelClass + '">' + f.level + '</div><div class="showcase-name">' + f.tarot + '</div><div class="showcase-poem">' + f.poem.substring(0, 20) + '...</div></div>';
+                item.innerHTML = '<div class="showcase-symbol">' + f.tarotSymbol + '</div><div class="showcase-info"><div class="showcase-level ' + levelClass + '">' + f.level + '</div><div class="showcase-name">' + f.tarot + '</div><div class="showcase-poem">' + f.poem.substring(0, 15) + '...</div></div>';
                 list.appendChild(item);
             });
         }
+        
+        // 点击主按钮
         document.getElementById('drawBtn').addEventListener('click', async function() {
-            const inviteCode = document.getElementById('inviteCode').value.trim();
             const errorMsg = document.getElementById('errorMsg');
             const successMsg = document.getElementById('successMsg');
+            const inviteCodeInput = document.getElementById('inviteCode');
+            
             errorMsg.textContent = '';
             successMsg.textContent = '';
+            
+            // 如果已经验证过，直接抽签
+            if (validated) {
+                drawFortune();
+                return;
+            }
+            
+            // 需要验证邀请码
+            const inviteCode = inviteCodeInput.value.trim();
             if (!inviteCode) {
                 errorMsg.textContent = '请输入邀请码';
                 return;
             }
+            
             this.disabled = true;
             this.textContent = '验证中...';
+            
             try {
                 const res = await fetch(API_BASE + '/api/invite/validate', {
                     method: 'POST',
@@ -406,6 +432,7 @@
                 const data = await res.json();
                 if (data.valid) {
                     validated = true;
+                    localStorage.setItem('inviteCode', inviteCode);
                     successMsg.textContent = '✓ 验证成功';
                     drawFortune();
                 } else {
@@ -417,32 +444,33 @@
             this.disabled = false;
             this.textContent = '开启命运之旅';
         });
+        
         function drawFortune() {
             showLoading();
             setTimeout(() => {
-                const fortune = getRandomFortune();
+                const fortune = fortunes[Math.floor(Math.random() * fortunes.length)];
                 showResult(fortune);
             }, 2000);
         }
-        function getRandomFortune() {
-            const index = Math.floor(Math.random() * fortunes.length);
-            return fortunes[index];
-        }
+        
         function showLoading() {
-            showPage('loading');
+            document.getElementById('homePage').classList.remove('active');
+            document.getElementById('resultPage').classList.remove('active');
+            document.getElementById('loading').classList.add('active');
+            document.getElementById('bottomBar').classList.remove('active');
         }
-        function hideLoading() {
-            document.getElementById('loading').classList.remove('active');
-            document.getElementById('loading').style.display = 'none';
-        }
+        
         function showResult(fortune) {
             currentFortune = fortune;
+            
+            // 设置运势
             const levelBadge = document.getElementById('levelBadge');
             levelBadge.textContent = fortune.level;
             levelBadge.className = 'fortune-level';
             if (fortune.level === '大吉') levelBadge.classList.add('level-daji');
             else if (fortune.level === '中吉') levelBadge.classList.add('level-zhongji');
             else levelBadge.classList.add('level-xiaoji');
+            
             document.getElementById('tarotSymbol').textContent = fortune.tarotSymbol;
             document.getElementById('tarotName').textContent = fortune.tarot;
             document.getElementById('element').textContent = fortune.element;
@@ -453,141 +481,45 @@
             document.getElementById('love').textContent = fortune.love;
             document.getElementById('health').textContent = fortune.health;
             document.getElementById('fortune').textContent = fortune.fortune;
-            document.getElementById('study').textContent = fortune.study;
-            document.getElementById('luckyColor').textContent = fortune.luckyColor;
-            document.getElementById('luckyNum').textContent = fortune.luckyNum;
-            document.getElementById('luckyTime').textContent = fortune.luckyTime;
-            document.getElementById('luckyDir').textContent = fortune.luckyDir;
             document.getElementById('backPoem').textContent = fortune.poem;
-            document.getElementById('backDetail').textContent = fortune.detail;
-            document.getElementById('flipCard').classList.remove('flipped');
-            hideLoading();
-            showPage('resultSection');
-            document.getElementById('resultSection').classList.add('active');
+            document.getElementById('backDetail').textContent = fortune.backDetail;
+            
+            // 幸运数据
+            const directions = ['东', '南', '西', '北', '东南', '东北', '西南', '西北'];
+            const colors = ['金色', '红色', '蓝色', '绿色', '紫色', '白色'];
+            const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+            const times = ['子时', '丑时', '寅时', '卯时', '辰时', '巳时', '午时', '未时', '申时', '酉时', '戌时', '亥时'];
+            document.getElementById('luckyDirection').textContent = directions[Math.floor(Math.random() * directions.length)];
+            document.getElementById('luckyColor').textContent = colors[Math.floor(Math.random() * colors.length)];
+            document.getElementById('luckyNumber').textContent = numbers[Math.floor(Math.random() * numbers.length)];
+            document.getElementById('luckyTime').textContent = times[Math.floor(Math.random() * times.length)];
+            
+            // 显示结果页
+            document.getElementById('loading').classList.remove('active');
+            document.getElementById('resultPage').classList.add('active');
             document.getElementById('bottomBar').classList.add('active');
+            window.scrollTo(0, 0);
         }
+        
         function flipCard() {
             document.getElementById('flipCard').classList.toggle('flipped');
         }
+        
         function shareFortune() {
-            const fortune = currentFortune;
-            if (!fortune) return;
-            document.getElementById('shareTarotSymbol').textContent = fortune.tarotSymbol;
-            document.getElementById('shareTarotName').textContent = fortune.tarot;
-            const shareLevel = document.getElementById('shareLevel');
-            shareLevel.textContent = fortune.level;
-            shareLevel.className = 'share-modal-level';
-            if (fortune.level === '大吉') shareLevel.classList.add('level-daji');
-            else if (fortune.level === '中吉') shareLevel.classList.add('level-zhongji');
-            else shareLevel.classList.add('level-xiaoji');
-            document.getElementById('sharePoem').textContent = fortune.poem;
-            document.getElementById('shareModal').classList.add('active');
-        }
-        function closeShareModal() {
-            document.getElementById('shareModal').classList.remove('active');
-        }
-        function goHome() {
-            showPage('inputSection');
-            document.getElementById('resultSection').classList.remove('active');
-            document.getElementById('detailPage').style.display = 'none';
-            document.getElementById('shareModal').classList.remove('active');
-            document.getElementById('bottomBar').classList.remove('active');
-            document.getElementById('inviteCode').value = '';
-            document.getElementById('errorMsg').textContent = '';
-            document.getElementById('successMsg').textContent = '';
-            validated = false;
-            window.scrollTo(0, 0);
-        }
-        async function saveImage() {
-            const resultCard = document.querySelector('#resultSection .card');
-            try {
-                const canvas = await html2canvas(resultCard, {backgroundColor: '#1a0a2e', scale: 2});
-                const link = document.createElement('a');
-                link.download = '天选上上签-' + currentFortune.level + '.png';
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-            } catch(e) {
-                alert('保存失败，请重试');
-            }
-        }
-        function copyLink() {
-            const url = window.location.href;
-            navigator.clipboard.writeText(url).then(() => {
-                alert('链接已复制到剪贴板');
-            }).catch(() => {
-                alert('复制失败，请手动复制');
-            });
-        }
-        function shareWechat() {
-            shareFortune();
-        }
-        
-        // 页面切换函数
-        function showPage(pageId) {
-            document.querySelectorAll('.page').forEach(p => {
-                p.classList.remove('active');
-                p.style.display = 'none';
-            });
-            const target = document.getElementById(pageId);
-            if (target) {
-                target.classList.add('active');
-                target.style.display = 'block';
-            }
-        }
-        }
-        
-        // 显示详情页（他人运势）
-        function showDetailPage(fortune) {
-            currentFortune = fortune;
-            const levelBadge = document.getElementById('detailLevelBadge');
-            levelBadge.textContent = fortune.level;
-            levelBadge.className = 'fortune-level';
-            if (fortune.level === '大吉') levelBadge.classList.add('level-daji');
-            else if (fortune.level === '中吉') levelBadge.classList.add('level-zhongji');
-            else levelBadge.classList.add('level-xiaoji');
+            if (!currentFortune) return;
             
-            document.getElementById('detailTarotSymbol').textContent = fortune.tarotSymbol;
-            document.getElementById('detailTarotName').textContent = fortune.tarot;
-            document.getElementById('detailElement').textContent = fortune.element;
-            document.getElementById('detailZodiac').textContent = fortune.zodiac;
-            document.getElementById('detailMatchRate').textContent = (95 + Math.random() * 5).toFixed(1) + '%';
-            document.getElementById('detailPoem').textContent = fortune.poem;
-            document.getElementById('detailCareer').textContent = fortune.career;
-            document.getElementById('detailLove').textContent = fortune.love;
-            document.getElementById('detailHealth').textContent = fortune.health;
-            document.getElementById('detailFortune').textContent = fortune.fortune;
-            document.getElementById('detailStudy').textContent = fortune.study;
-            document.getElementById('detailLuckyColor').textContent = fortune.luckyColor;
-            document.getElementById('detailLuckyNum').textContent = fortune.luckyNum;
-            document.getElementById('detailLuckyTime').textContent = fortune.luckyTime;
-            document.getElementById('detailLuckyDir').textContent = fortune.luckyDir;
-            document.getElementById('detailBackPoem').textContent = fortune.poem;
-            document.getElementById('detailBackDetail').textContent = fortune.detail;
-            
-            document.getElementById('detailFlipCard').classList.remove('flipped');
-            document.getElementById('resultSection').classList.remove('active');
-            showPage('detailPage');
-            document.getElementById('bottomBar').classList.add('active');
-            window.scrollTo(0, 0);
-        }
-        
-        function flipDetailCard() {
-            document.getElementById('detailFlipCard').classList.toggle('flipped');
-        }
-        
-        function openShareModal() {
-            const fortune = currentFortune;
-            if (!fortune) return;
-            document.getElementById('shareTarotSymbol').textContent = fortune.tarotSymbol;
-            document.getElementById('shareTarotName').textContent = fortune.tarot;
+            // 设置分享卡片
             const shareLevel = document.getElementById('shareLevel');
-            shareLevel.textContent = fortune.level;
+            shareLevel.textContent = currentFortune.level;
             shareLevel.className = 'share-modal-level';
-            if (fortune.level === '大吉') shareLevel.classList.add('level-daji');
-            else if (fortune.level === '中吉') shareLevel.classList.add('level-zhongji');
+            if (currentFortune.level === '大吉') shareLevel.classList.add('level-daji');
+            else if (currentFortune.level === '中吉') shareLevel.classList.add('level-zhongji');
             else shareLevel.classList.add('level-xiaoji');
-            document.getElementById('sharePoem').textContent = fortune.poem;
-            document.getElementById('shareFlipCard').classList.remove('flipped');
+            
+            document.getElementById('shareTarotSymbol').textContent = currentFortune.tarotSymbol;
+            document.getElementById('shareTarotName').textContent = currentFortune.tarot;
+            document.getElementById('sharePoem').textContent = currentFortune.poem;
+            
             document.getElementById('shareModal').classList.add('active');
         }
         
@@ -595,28 +527,34 @@
             document.getElementById('shareFlipCard').classList.toggle('flipped');
         }
         
-        function saveShareImage() {
-            const shareCard = document.querySelector('#shareFlipCard');
-            // 保存时确保显示正面
-            const wasFlipped = shareCard.classList.contains('flipped');
-            shareCard.classList.remove('flipped');
+        function closeShareModal() {
+            document.getElementById('shareModal').classList.remove('active');
+        }
+        
+        function saveCardImage() {
+            const card = document.querySelector('.share-modal-tarot .flip-card');
+            if (!card) return;
             
-            const shareContent = document.querySelector('.share-modal-content');
-            html2canvas(shareContent, {backgroundColor: '#1a0a2e', scale: 2}).then(canvas => {
+            html2canvas(card, {
+                backgroundColor: null,
+                scale: 2
+            }).then(canvas => {
                 const link = document.createElement('a');
-                link.download = '天选上上签-' + currentFortune.level + '.png';
+                link.download = '今日运势.png';
                 link.href = canvas.toDataURL('image/png');
                 link.click();
-                // 恢复翻转状态
-                if (wasFlipped) shareCard.classList.add('flipped');
-            }).catch(e => {
-                alert('保存失败，请重试');
-                if (wasFlipped) shareCard.classList.add('flipped');
             });
         }
         
-        generateStars();
-        renderShowcase();
+        function goHome() {
+            document.getElementById('resultPage').classList.remove('active');
+            document.getElementById('bottomBar').classList.remove('active');
+            document.getElementById('homePage').classList.add('active');
+            document.getElementById('flipCard').classList.remove('flipped');
+            window.scrollTo(0, 0);
+        }
+        
+        init();
     </script>
 </body>
 </html>
