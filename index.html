@@ -301,8 +301,8 @@
                 </div>
             </div>
             <div class="share-modal-actions">
-                <button class="btn btn-save-img" onclick="saveCardImage()">💾 保存图片</button>
-                <button class="btn btn-close-modal" onclick="closeShareModal()">关闭</button>
+                <button class="btn btn-save-img" onclick="saveCardImage()">💾 保存卡片</button>
+                <button class="btn btn-share-fixed" onclick="copyShareLink()">🔗 分享链接</button>
             </div>
         </div>
     </div>
@@ -327,7 +327,29 @@
         // 初始化
         function init() {
             generateStars();
-            loadInviteCode();
+            
+            // 检查URL hash是否有运势数据
+            const hash = window.location.hash;
+            if (hash && hash.startsWith('#fortune=')) {
+                try {
+                    const encoded = hash.replace('#fortune=', '');
+                    const fortuneData = JSON.parse(decodeURIComponent(encoded));
+                    // 隐藏邀请码区域
+                    document.getElementById('inviteSection').classList.remove('active');
+                    // 显示运势结果
+                    validated = true; // 标记已验证
+                    currentFortune = fortuneData;
+                    showResult(fortuneData);
+                    // 清除hash以免刷新时重复显示
+                    history.replaceState(null, '', window.location.pathname);
+                } catch (e) {
+                    console.error('解析运势数据失败:', e);
+                    loadInviteCode();
+                }
+            } else {
+                loadInviteCode();
+            }
+            
             renderShowcase();
         }
         
@@ -353,6 +375,7 @@
         function loadInviteCode() {
             const savedCode = localStorage.getItem('inviteCode');
             if (savedCode) {
+                document.getElementById('inviteCode').value = savedCode;
                 validateSavedCode(savedCode);
             } else {
                 document.getElementById('inviteSection').classList.add('active');
@@ -372,10 +395,11 @@
                     validated = true;
                     document.getElementById('inviteSection').classList.remove('active');
                 } else {
-                    localStorage.removeItem('inviteCode');
+                    // 验证失败但保留邀请码，让用户可以重试
                     document.getElementById('inviteSection').classList.add('active');
                 }
             } catch (e) {
+                // 网络错误时也保持邀请码，用户可以重试
                 document.getElementById('inviteSection').classList.add('active');
             }
         }
@@ -383,11 +407,15 @@
         // 渲染案例
         function renderShowcase() {
             const list = document.getElementById('showcaseList');
-            const shuffled = [...fortunes].sort(() => Math.random() - 0.5).slice(0, 3);
+            const shuffled = [...fortunes].sort(() => Math.random() - 0.5).slice(0, 5);
             shuffled.forEach(f => {
                 const item = document.createElement('div');
                 item.className = 'showcase-item';
-                item.onclick = () => showResult(f);
+                // 在本页显示运势结果（与抽签一致）
+                item.onclick = () => {
+                    validated = true;
+                    showResult(f);
+                };
                 let levelClass = f.level === '大吉' ? 'level-daji' : (f.level === '中吉' ? 'level-zhongji' : 'level-xiaoji');
                 item.innerHTML = '<div class="showcase-symbol">' + f.tarotSymbol + '</div><div class="showcase-info"><div class="showcase-level ' + levelClass + '">' + f.level + '</div><div class="showcase-name">' + f.tarot + '</div><div class="showcase-poem">' + f.poem.substring(0, 15) + '...</div></div>';
                 list.appendChild(item);
@@ -409,8 +437,16 @@
                 return;
             }
             
-            // 需要验证邀请码
-            const inviteCode = inviteCodeInput.value.trim();
+            // 检查localStorage中是否有保存的邀请码
+            const savedCode = localStorage.getItem('inviteCode');
+            let inviteCode = inviteCodeInput.value.trim();
+            
+            // 如果没有输入，使用保存的邀请码
+            if (!inviteCode && savedCode) {
+                inviteCode = savedCode;
+                inviteCodeInput.value = inviteCode;
+            }
+            
             if (!inviteCode) {
                 errorMsg.textContent = '请输入邀请码';
                 return;
@@ -435,7 +471,14 @@
                     errorMsg.textContent = data.message || '邀请码无效';
                 }
             } catch (e) {
-                errorMsg.textContent = '验证失败，请稍后重试';
+                // 网络错误时，如果有保存的邀请码，也允许直接抽签
+                if (savedCode) {
+                    validated = true;
+                    successMsg.textContent = '✓ 离线模式';
+                    drawFortune();
+                } else {
+                    errorMsg.textContent = '验证失败，请稍后重试';
+                }
             }
             this.disabled = false;
             this.textContent = '开启命运之旅';
@@ -458,6 +501,9 @@
         
         function showResult(fortune) {
             currentFortune = fortune;
+            
+            // 隐藏邀请码区域
+            document.getElementById('inviteSection').classList.remove('active');
             
             // 设置运势
             const levelBadge = document.getElementById('levelBadge');
@@ -527,6 +573,20 @@
             document.getElementById('shareModal').classList.remove('active');
         }
         
+        // 点击弹窗外部关闭
+        document.getElementById('shareModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeShareModal();
+            }
+        });
+        
+        // ESC键关闭弹窗
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeShareModal();
+            }
+        });
+        
         function saveCardImage() {
             const card = document.querySelector('.share-modal-tarot .flip-card');
             if (!card) return;
@@ -542,11 +602,33 @@
             });
         }
         
+        function copyShareLink() {
+            const url = window.location.href;
+            navigator.clipboard.writeText(url).then(() => {
+                alert('链接已复制到剪贴板！');
+            }).catch(() => {
+                // 备用方案
+                const input = document.createElement('input');
+                input.value = url;
+                document.body.appendChild(input);
+                input.select();
+                document.execCommand('copy');
+                document.body.removeChild(input);
+                alert('链接已复制到剪贴板！');
+            });
+        }
+        
         function goHome() {
             document.getElementById('resultPage').classList.remove('active');
             document.getElementById('bottomBar').classList.remove('active');
             document.getElementById('homePage').classList.add('active');
             document.getElementById('flipCard').classList.remove('flipped');
+            
+            // 如果已验证，隐藏邀请码区域
+            if (validated) {
+                document.getElementById('inviteSection').classList.remove('active');
+            }
+            
             window.scrollTo(0, 0);
         }
         
