@@ -121,7 +121,7 @@
         .lucky-value { font-size: 0.75rem; font-weight: 600; color: var(--gold-light); }
         
         /* 底部操作栏 */
-        .bottom-bar { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(26, 10, 46, 0.98), rgba(26, 10, 46, 0.9)); border-top: 1px solid rgba(212, 175, 55, 0.2); padding: 12px 20px 20px; z-index: 100; backdrop-filter: blur(10px); }
+        .bottom-bar { display: none; padding: 16px 0 20px; }
         .bottom-bar.active { display: flex; gap: 10px; }
         .bottom-bar .btn { padding: 12px 16px; font-size: 0.9rem; }
         .btn-share-fixed { background: linear-gradient(135deg, #07c160, #06ad56); color: white; flex: 1; }
@@ -160,7 +160,7 @@
             .stats-grid { grid-template-columns: 1fr; }
             .lucky-grid { grid-template-columns: repeat(2, 1fr); }
             .action-buttons { flex-direction: column; }
-            .bottom-bar { padding: 10px 15px 18px; }
+
             .share-modal-content { padding: 18px; }
             .share-modal-actions { flex-direction: column; }
         }
@@ -177,17 +177,13 @@
                 <p class="subtitle">✦ 今日运势占卜 ✦</p>
             </div>
             
-            <!-- 邀请码区域（验证通过后隐藏） -->
-            <div class="card input-section" id="inviteSection">
+            <!-- 邀请码区域 -->
+            <div class="card" id="inviteSection">
                 <a href="https://xianyu.taobao.com/item?id=咸鱼商品链接占位符" target="_blank" class="btn-get-invite">🎫 获取邀请码</a>
                 <div class="input-group">
                     <label class="input-label">请输入邀请码</label>
                     <input type="text" class="input-field" id="inviteCode" placeholder="输入邀请码" maxlength="20">
                 </div>
-            </div>
-            
-            <!-- 主按钮 -->
-            <div class="card action-section">
                 <button class="btn btn-primary" id="drawBtn">开启命运之旅</button>
                 <p class="error-msg" id="errorMsg"></p>
                 <p class="success-msg" id="successMsg"></p>
