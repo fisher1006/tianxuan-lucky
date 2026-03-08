@@ -314,7 +314,6 @@ tianxuan-lucky/
 │   └── ShareButton.tsx    # 分享按钮
 ├── data/
 │   ├── fortunes.ts         # 签文数据
-│   └── inviteCodes.ts     # 邀请码列表
 ├── lib/
 │   └── utils.ts           # 工具函数
 ├── types/

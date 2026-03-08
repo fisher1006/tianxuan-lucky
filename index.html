@@ -146,15 +146,15 @@
         .share-modal-level { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
         .share-modal-poem { font-size: 0.8rem; color: var(--cream); line-height: 1.5; font-style: italic; margin-bottom: 14px; }
         
-        .share-modal-actions { display: flex; gap: 10px; flex-direction: row; }
-        .share-modal-actions .btn { padding: 12px 16px; font-size: 0.85rem; flex: 1; }
+        .share-modal-actions { display: flex; gap: 10px; flex-direction: row; flex-wrap: wrap; justify-content: center; }
+        .share-modal-actions .btn { padding: 12px 16px; font-size: 0.85rem; flex: 1; min-width: 100px; max-width: 150px; }
         .btn-save-img { background: linear-gradient(135deg, #9b59b6, #8e44ad); color: white; }
         .btn-save-img:hover { background: linear-gradient(135deg, #8e44ad, #7d3c98); }
         .btn-close-modal { background: rgba(255, 255, 255, 0.1); color: var(--cream); border: 1px solid rgba(212, 175, 55, 0.3); }
         
         @media (max-width: 480px) {
-            .share-modal-actions { flex-direction: row; }
-            .share-modal-actions .btn { padding: 10px 8px; font-size: 0.75rem; }
+            .share-modal-actions { flex-direction: row; flex-wrap: nowrap; }
+            .share-modal-actions .btn { min-width: 80px; padding: 10px 6px; font-size: 0.7rem; }
         }
         
         .footer { text-align: center; padding: 20px 0; opacity: 0.5; font-size: 0.75rem; }
@@ -167,7 +167,7 @@
             .action-buttons { flex-direction: column; }
 
             .share-modal-content { padding: 18px; }
-            .share-modal-actions { flex-direction: column; }
+            .share-modal-actions { flex-direction: row; }
         }
     </style>
 </head>
@@ -345,7 +345,10 @@
                     const encoded = hash.replace('#fortune=', '');
                     const fortuneData = JSON.parse(decodeURIComponent(encoded));
                     // 隐藏邀请码区域
-                    document.getElementById('inviteSection').classList.remove('active');
+                    const inviteSection = document.getElementById('inviteInputSection');
+                    if (inviteSection) {
+                        inviteSection.style.display = 'none';
+                    }
                     // 显示运势结果
                     validated = true; // 标记已验证
                     currentFortune = fortuneData;
@@ -422,6 +425,7 @@
         function renderShowcase() {
             const list = document.getElementById('showcaseList');
             const shuffled = [...fortunes].sort(() => Math.random() - 0.5).slice(0, 5);
+            const baseUrl = window.location.origin + window.location.pathname;
             shuffled.forEach(f => {
                 const item = document.createElement('div');
                 item.className = 'showcase-item';
@@ -429,7 +433,7 @@
                 item.onclick = () => {
                     // 将运势数据编码到URL在新页面打开
                     const encoded = encodeURIComponent(JSON.stringify(f));
-                    const newUrl = window.location.pathname + '#fortune=' + encoded;
+                    const newUrl = baseUrl + '#fortune=' + encoded;
                     window.open(newUrl, '_blank');
                 };
                 let levelClass = f.level === '大吉' ? 'level-daji' : (f.level === '中吉' ? 'level-zhongji' : 'level-xiaoji');
@@ -618,7 +622,24 @@
                 html2canvas(card, {
                     backgroundColor: null,
                     scale: 2,
-                    useCORS: true
+                    useCORS: true,
+                    onclone: (clonedDoc) => {
+                        // 在克隆的文档中移除3D transform，避免图片反转
+                        const clonedCard = clonedDoc.querySelector('.share-modal-tarot .flip-card');
+                        if (clonedCard) {
+                            clonedCard.style.transform = 'none';
+                        }
+                        const front = clonedDoc.querySelector('.share-modal-tarot .flip-card-front');
+                        const back = clonedDoc.querySelector('.share-modal-tarot .flip-card-back');
+                        if (front) {
+                            front.style.transform = 'none';
+                            front.style.backfaceVisibility = 'visible';
+                        }
+                        if (back) {
+                            back.style.transform = 'none';
+                            back.style.backfaceVisibility = 'visible';
+                        }
+                    }
                 }).then(canvas => {
                     // 恢复翻转状态
                     if (isFlipped) {
