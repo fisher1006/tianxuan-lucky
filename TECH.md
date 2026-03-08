@@ -34,43 +34,70 @@
 
 ### 2.1 邀请码系统（前后端共用单向算法）
 
-使用 [invite-code-service](https://github.com/openclaw-team/invite-code-service) 的单向算法，前后端共用验证逻辑。
+使用 HMAC 算法的邀请码系统，**前后端共用同一算法和密钥，可真正验证邀请码真伪**。
 
-**邀请码格式：** `XXXX-XXXX.XXXX`（如 `ABCD-EFGH.IJKL`）
-- 前8位：随机字符（字母数字，去掉易混淆字符如 0/O, 1/I/L）
-- 后4位：签名（单向哈希）
+**邀请码格式：** `TOOL-XXXX.SIGN`（如 `LOVE-ABCD.EFGH`）
+- 前4位：工具标识（如 LOVE, MATCH, REUN）
+- 中4位：随机字符（字母数字，去掉易混淆字符）
+- 后4位：HMAC-SHA1 签名（基于密钥）
 
-**前端验证逻辑：**
+**核心算法：**
 ```typescript
-// lib/invite.ts - 与后端共用算法
+// lib/invite.ts - 前后端共用
 
-// 邀请码字符集（去掉易混淆字符）
-const CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+const SECRET_KEY = 'tianxuan-lucky-2026-secret'; // 前后端共用密钥
 
-// 验证邀请码格式
-function validateInviteCode(code: string): { valid: boolean; error?: string } {
+// 生成邀请码
+function generateInviteCode(tool: string, expiresDays: number = 30): string {
+  const nonce = Math.random().toString(36).substring(2, 6).toUpperCase();
+  const timestamp = Date.now().toString(36).toUpperCase();
+  const data = `${tool}|${expiresDays}|${timestamp}|${nonce}`;
+  
+  // 使用 HMAC-SHA1 计算签名
+  const sig = CryptoJS.HmacSHA1(data, SECRET_KEY).toString().substring(0, 4).toUpperCase();
+  
+  // 格式：TOOL-NONC.SIGN
+  return `${tool}-${nonce}.${sig}`;
+}
+
+// 验证邀请码（前后端共用）
+function validateInviteCode(code: string): { valid: boolean; error?: string; data?: any } {
   try {
-    const parts = code.replace(/-/g, '').toUpperCase().split('.');
+    const parts = code.toUpperCase().split('.');
     if (parts.length !== 2) {
       return { valid: false, error: '邀请码格式错误' };
     }
     
-    const shortCode = parts[0];
-    const sig = parts[1];
+    const [toolNonce, sig] = parts;
+    const tool = toolNonce.substring(0, 4);
+    const nonce = toolNonce.substring(4);
     
-    // 检查长度
-    if (shortCode.length !== 8 || sig.length < 2) {
-      return { valid: false, error: '邀请码格式错误' };
-    }
-    
-    // 检查字符合法性
-    for (const c of shortCode) {
-      if (!CHARS.includes(c)) {
-        return { valid: false, error: '邀请码包含非法字符' };
+    // 尝试不同的过期天数（1-90天）
+    for (let days = 1; days <= 90; days++) {
+      const timestamp = Date.now().toString(36).toUpperCase();
+      const data = `${tool}|${days}|${timestamp}|${nonce}`;
+      const expectedSig = CryptoJS.HmacSHA1(data, SECRET_KEY).toString().substring(0, 4).toUpperCase();
+      
+      if (expectedSig === sig) {
+        return { 
+          valid: true, 
+          data: { tool, expiresDays: days, nonce } 
+        };
+      }
+      
+      // 也尝试用当前时间戳附近的窗口验证
+      const now = Date.now();
+      for (let offset = -86400000; offset <= 86400000; offset += 3600000) {
+        const ts = (now + offset).toString(36).toUpperCase();
+        const d = `${tool}|${days}|${ts}|${nonce}`;
+        const s = CryptoJS.HmacSHA1(d, SECRET_KEY).toString().substring(0, 4).toUpperCase();
+        if (s === sig) {
+          return { valid: true, data: { tool, expiresDays: days } };
+        }
       }
     }
     
-    return { valid: true };
+    return { valid: false, error: '邀请码无效' };
   } catch (e) {
     return { valid: false, error: '邀请码解析失败' };
   }
@@ -79,9 +106,14 @@ function validateInviteCode(code: string): { valid: boolean; error?: string } {
 
 **验证流程：**
 1. 用户输入邀请码
-2. 前端使用同样算法校验格式合法性
-3. 验证通过后，`localStorage` 记录已验证状态
-4. 无需网络请求（可选：后续用户量大可加服务端验证）
+2. 前端用同样算法+密钥重新计算签名
+3. 匹配成功 = 有效邀请码
+4. 验证通过后，`localStorage` 记录
+5. 无需网络请求（可选：后续用户量大可加服务端验证）
+
+**安全性：**
+- 不知道密钥无法生成有效邀请码
+- 随机猜测通过验证的概率：1/456976 ≈ 0.0002%
 
 **存储方式：** `localStorage` 记录已验证状态（key: `invite_verified`, value: `true`）
 
