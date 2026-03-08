@@ -43,8 +43,9 @@ export function validateInviteCode(code: string): InviteValidation {
     
     for (let days = 1; days <= 90; days++) {
       // 尝试当前时间戳附近的不同偏移（15分钟为单位，7天内）
+      // 注意：生成时用的是过去的时间戳，所以验证时应该用 now - offset * ...
       for (let offset = -672; offset <= 672; offset++) {
-        const ts = (now + offset * 900000).toString(36).toUpperCase();
+        const ts = (now - offset * 900000).toString(36).toUpperCase();
         const d = `${tool}|${days}|${ts}|${nonce}`;
         const s = CryptoJS.HmacSHA1(d, SECRET_KEY).toString().substring(0, 4).toUpperCase();
         if (s === sig) {
