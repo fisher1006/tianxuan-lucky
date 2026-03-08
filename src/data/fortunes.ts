@@ -6,11 +6,13 @@ export const loveFortunes: LoveFortune[] = [
     id: '1',
     emoji: '🌸',
     title: '上上签 - 桃花盛开',
-    description: '今日姻缘运势极佳！你的桃花运正值高峰期，身旁可能已有欣赏你的人。放下顾虑，主动出击，成功率高达九成！',
+    subtitle: '今日姻缘运势极佳！你的桃花运正值高峰期，身旁可能已有欣赏你的人。放下顾虑，主动出击，成功率高达九成！',
+    overview: '在宇宙星图的某个角落，你的正缘正在悄然绽放。星辰为你铺就一条浪漫之路，那个人带着星光走向你。把握今天，勇敢迈出第一步，爱情的奇迹就在眼前。',
+    lucky: { color: '粉红色', number: 7, time: '14:00-16:00', direction: '东南', place: '咖啡馆' },
     tips: [
-      '遇到心仪的对象时，直接表达好感成功率更高',
-      '今天适合参加社交活动，婚恋成功率倍增',
-      '保持微笑，你的好运正在路上'
+      { emoji: '☕', text: '去咖啡馆放松，好运正在来临' },
+      { emoji: '👀', text: '注意身边的人，TA可能在偷偷看你' },
+      { emoji: '💌', text: '遇到心动的人就主动表达' }
     ],
     rank: 'super_lucky'
   },
@@ -18,11 +20,13 @@ export const loveFortunes: LoveFortune[] = [
     id: '2',
     emoji: '🌹',
     title: '上签 - 紅鸞星動',
-    description: '红鸾星今日动，你的人格魅力大放异彩！单身的你有望遇到理想型，已有伴侣的你们感情会更加甜蜜。',
+    subtitle: '红鸾星今日动，你的人格魅力大放异彩！单身的你有望遇到理想型，已有伴侣的你们感情会更加甜蜜。',
+    overview: '月老为你系上红线，丘比特之箭已悄然射出。你的灵魂伴侣正在这个世界的某个角落等待与你相遇。魅力的光芒在你身上流转，吸引着命中注定的那个TA。',
+    lucky: { color: '酒红色', number: 3, time: '19:00-21:00', direction: '东', place: '书店' },
     tips: [
-      '今天会遇到让你心动的对象，好好把握',
-      '对身边的人好一点，惊喜随时降临',
-      '保持积极心态，好事连连'
+      { emoji: '📚', text: '去书店逛逛，可能遇到同好之人' },
+      { emoji: '✨', text: '保持魅力，好运会主动找上门' },
+      { emoji: '💬', text: '对身边的人好一点，惊喜随时降临' }
     ],
     rank: 'super_lucky'
   },
@@ -30,11 +34,13 @@ export const loveFortunes: LoveFortune[] = [
     id: '3',
     emoji: '💕',
     title: '中上签 - 情意绵绵',
-    description: '感情运势平稳上升，你对爱情的期待正在慢慢实现。耐心等待，属于你的缘分即将出现。',
+    subtitle: '感情运势平稳上升，你对爱情的期待正在慢慢实现。耐心等待，属于你的缘分即将出现。',
+    overview: '爱情的花蕾正在枝头悄然孕育，只需要再给它一点时间。春风轻拂，你的心动信号正在被宇宙接收。那个对的人，正在穿越人海向你走来。',
+    lucky: { color: '浅紫色', number: 5, time: '10:00-12:00', direction: '东北', place: '公园' },
     tips: [
-      '不要急于求成，缘分需要时间酝酿',
-      '多参加兴趣活动，扩大社交圈',
-      '保持真诚，待人友善'
+      { emoji: '🌿', text: '去公园散步，享受春日的浪漫' },
+      { emoji: '🎨', text: '参加兴趣活动，扩大社交圈' },
+      { emoji: '😊', text: '保持真诚，待人友善' }
     ],
     rank: 'lucky'
   },
@@ -42,11 +48,13 @@ export const loveFortunes: LoveFortune[] = [
     id: '4',
     emoji: '🌺',
     title: '中签 - 花开有时',
-    description: '感情需要耐心培育，不要急于求成。时机成熟时，爱情自然会绽放。现在是提升自己的好时机。',
+    subtitle: '感情需要耐心培育，不要急于求成。时机成熟时，爱情自然会绽放。现在是提升自己的好时机。',
+    overview: '每一朵花都有它的花期，爱情亦然。你的缘分如同含苞待放的花朵，需要阳光和雨露的滋养。现在是自我成长的最佳时机，当你盛开，蝴蝶自來。',
+    lucky: { color: '白色', number: 8, time: '15:00-17:00', direction: '南', place: '健身房' },
     tips: [
-      '提升自我，让自己变得更优秀',
-      '不要过于执着于结果，享受过程',
-      '多关注自己的兴趣爱好'
+      { emoji: '💪', text: '去健身房提升自己' },
+      { emoji: '🌸', text: '不要过于执着结果，享受过程' },
+      { emoji: '🎵', text: '多关注自己的兴趣爱好' }
     ],
     rank: 'lucky'
   },
@@ -54,11 +62,13 @@ export const loveFortunes: LoveFortune[] = [
     id: '5',
     emoji: '🍃',
     title: '中平签 - 静待花开',
-    description: '感情运势较为平淡，不宜有太大动作。适合修身养性，等待最佳时机。切勿急于表白或做重大决定。',
+    subtitle: '感情运势较为平淡，不宜有太大动作。适合修身养性，等待最佳时机。切勿急于表白或做重大决定。',
+    overview: '湖面平静如镜，正是内心修养的好时光。爱情尚未成熟，强行追求只会惊扰了这份美好。静心等待，让时间和宇宙为你安排最合适的相遇。',
+    lucky: { color: '淡蓝色', number: 2, time: '20:00-22:00', direction: '西北', place: '家中' },
     tips: [
-      '保持平常心，不要刻意追求',
-      '利用这段时间提升内在修养',
-      '时机未到，静心等待'
+      { emoji: '🧘', text: '保持平常心，不要刻意追求' },
+      { emoji: '📖', text: '利用这段时间阅读提升内在' },
+      { emoji: '🌙', text: '时机未到，静心等待缘分' }
     ],
     rank: 'average'
   },
@@ -66,11 +76,13 @@ export const loveFortunes: LoveFortune[] = [
     id: '6',
     emoji: '🌧️',
     title: '下签 - 暂未相逢',
-    description: '今日不宜过于主动，感情方面可能会有小挫折。调整心态，不要灰心，好运很快就会来临。',
+    subtitle: '今日不宜过于主动，感情方面可能会有小挫折。调整心态，不要灰心，好运很快就会来临。',
+    overview: '乌云会散去，彩虹会出现。今天的挫折是为了明天更好的相遇暂时让心灵休憩，给自己一个拥抱。好运正在赶来的路上，属于你的爱情不会缺席。',
+    lucky: { color: '灰色', number: 1, time: '08:00-10:00', direction: '北', place: '卧室' },
     tips: [
-      '今天适合独处，不宜表白',
-      '保持乐观，不要被负面情绪影响',
-      '做点让自己开心的事'
+      { emoji: '🛏️', text: '今天适合独处，不宜表白' },
+      { emoji: '🌈', text: '保持乐观，坏天气很快过去' },
+      { emoji: '🎮', text: '做点让自己开心的事，放松心情' }
     ],
     rank: 'bad'
   }
@@ -83,6 +95,8 @@ export const dailyFortunes: Omit<DailyFortune, 'date'>[] = [
     color: '粉红色',
     number: 7,
     direction: '东南',
+    time: '14:00-16:00',
+    place: '咖啡馆',
     tip: '今天是超级幸运日！表白必成功，邂逅必来电!'
   },
   {
@@ -90,6 +104,8 @@ export const dailyFortunes: Omit<DailyFortune, 'date'>[] = [
     color: '桃红色',
     number: 3,
     direction: '东',
+    time: '19:00-21:00',
+    place: '书店',
     tip: '运势极佳，遇到真爱的概率高达80%！'
   },
   {
@@ -97,6 +113,8 @@ export const dailyFortunes: Omit<DailyFortune, 'date'>[] = [
     color: '浅紫色',
     number: 5,
     direction: '东北',
+    time: '10:00-12:00',
+    place: '公园',
     tip: '爱情运势上升，适合主动出击！'
   },
   {
@@ -104,6 +122,8 @@ export const dailyFortunes: Omit<DailyFortune, 'date'>[] = [
     color: '白色',
     number: 8,
     direction: '南',
+    time: '15:00-17:00',
+    place: '健身房',
     tip: '平稳的一天，保持好心情等待缘分。'
   },
   {
@@ -111,6 +131,8 @@ export const dailyFortunes: Omit<DailyFortune, 'date'>[] = [
     color: '淡蓝色',
     number: 2,
     direction: '西北',
+    time: '20:00-22:00',
+    place: '家中',
     tip: '今天适合学习提升自己，感情稍后再议。'
   },
   {
@@ -118,6 +140,8 @@ export const dailyFortunes: Omit<DailyFortune, 'date'>[] = [
     color: '灰色',
     number: 1,
     direction: '北',
+    time: '08:00-10:00',
+    place: '卧室',
     tip: '今日宜静不宜动，给自己放个假吧。'
   }
 ];
