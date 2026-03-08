@@ -16,8 +16,8 @@
 | **状态管理** | Zustand | 轻量级、适合邀请码状态管理 |
 
 **技术栈亮点：**
-- ✅ 无需数据库 - 邀请码内置于代码或配置文件
-- ✅ 无需后端 - 纯静态页面，抽签逻辑纯前端
+- ✅ 邀请码验证 - 前后端共用单向算法，前端可验证
+- ✅ 本地存储 - localStorage 记录验证状态
 - ✅ 部署简单 - Vercel 一键部署
 
 ### 1.2 部署
@@ -32,29 +32,58 @@
 
 ## 2. 数据结构设计
 
-### 2.1 邀请码（无需数据库）
+### 2.1 邀请码系统（前后端共用单向算法）
 
+使用 [invite-code-service](https://github.com/openclaw-team/invite-code-service) 的单向算法，前后端共用验证逻辑。
+
+**邀请码格式：** `XXXX-XXXX.XXXX`（如 `ABCD-EFGH.IJKL`）
+- 前8位：随机字符（字母数字，去掉易混淆字符如 0/O, 1/I/L）
+- 后4位：签名（单向哈希）
+
+**前端验证逻辑：**
 ```typescript
-// types/invite.ts
-interface InviteCode {
-  code: string;        // 邀请码，如 "TX2026ABCD"
-  type: 'single' | 'batch';  // 单次/批发
-  used: boolean;      // 是否已使用（前端仅做展示）
-  createdAt: string;  // 创建时间
-}
+// lib/invite.ts - 与后端共用算法
 
-// 数据存储：内置于代码的邀请码列表
-// 场景：用户量少（<1000），无需后端验证
-const INVITE_CODES: InviteCode[] = [
-  { code: 'TX2026TEST1', type: 'single', used: false },
-  { code: 'TX2026TEST10', type: 'batch', used: false },
-  // 可后续批量导入
-];
+// 邀请码字符集（去掉易混淆字符）
+const CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+
+// 验证邀请码格式
+function validateInviteCode(code: string): { valid: boolean; error?: string } {
+  try {
+    const parts = code.replace(/-/g, '').toUpperCase().split('.');
+    if (parts.length !== 2) {
+      return { valid: false, error: '邀请码格式错误' };
+    }
+    
+    const shortCode = parts[0];
+    const sig = parts[1];
+    
+    // 检查长度
+    if (shortCode.length !== 8 || sig.length < 2) {
+      return { valid: false, error: '邀请码格式错误' };
+    }
+    
+    // 检查字符合法性
+    for (const c of shortCode) {
+      if (!CHARS.includes(c)) {
+        return { valid: false, error: '邀请码包含非法字符' };
+      }
+    }
+    
+    return { valid: true };
+  } catch (e) {
+    return { valid: false, error: '邀请码解析失败' };
+  }
+}
 ```
 
-**验证逻辑：**
-- 用户输入邀请码 → 前端校验是否在白名单 → 通过则解锁功能
-- 存储方式：`localStorage` 记录已验证状态，避免每次刷新重复输入
+**验证流程：**
+1. 用户输入邀请码
+2. 前端使用同样算法校验格式合法性
+3. 验证通过后，`localStorage` 记录已验证状态
+4. 无需网络请求（可选：后续用户量大可加服务端验证）
+
+**存储方式：** `localStorage` 记录已验证状态（key: `invite_verified`, value: `true`）
 
 ### 2.2 抽签数据（纯前端）
 
@@ -217,11 +246,11 @@ interface MatchResult {
 
 ## 6. 后续扩展性
 
-虽然当前不需要数据库，但预留扩展接口：
+当前方案支持前端验证，后续可扩展：
 
 | 扩展方向 | 当前方案 | 未来升级 |
 |----------|----------|----------|
-| 邀请码管理 | 代码内置 | 简化的 JSON 文件或 CMS |
+| 邀请码验证 | 前端单向算法验证 | 可选：服务端验证（用户量大时） |
 | 数据统计 | 无 | Vercel Analytics（免费） |
 | 用户体系 | 无 | NextAuth.js（可选） |
 | 支付功能 | 人工 | 微信支付/小红书开店 |
