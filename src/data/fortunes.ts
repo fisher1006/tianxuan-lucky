@@ -7,6 +7,7 @@ export const loveFortunes: LoveFortune[] = [
     emoji: '🌸',
     title: '上上签 - 桃花盛开',
     subtitle: '今日姻缘运势极佳！你的桃花运正值高峰期，身旁可能已有欣赏你的人。放下顾虑，主动出击，成功率高达九成！',
+    description: '今日姻缘运势极佳！你的桃花运正值高峰期，身旁可能已有欣赏你的人。放下顾虑，主动出击，成功率高达九成！',
     overview: '在宇宙星图的某个角落，你的正缘正在悄然绽放。星辰为你铺就一条浪漫之路，那个人带着星光走向你。把握今天，勇敢迈出第一步，爱情的奇迹就在眼前。',
     lucky: { color: '粉红色', number: 7, time: '14:00-16:00', direction: '东南', place: '咖啡馆' },
     tips: [
@@ -21,6 +22,7 @@ export const loveFortunes: LoveFortune[] = [
     emoji: '🌹',
     title: '上签 - 紅鸞星動',
     subtitle: '红鸾星今日动，你的人格魅力大放异彩！单身的你有望遇到理想型，已有伴侣的你们感情会更加甜蜜。',
+    description: '红鸾星今日动，你的人格魅力大放异彩！单身的你有望遇到理想型，已有伴侣的你们感情会更加甜蜜。',
     overview: '月老为你系上红线，丘比特之箭已悄然射出。你的灵魂伴侣正在这个世界的某个角落等待与你相遇。魅力的光芒在你身上流转，吸引着命中注定的那个TA。',
     lucky: { color: '酒红色', number: 3, time: '19:00-21:00', direction: '东', place: '书店' },
     tips: [
@@ -35,6 +37,7 @@ export const loveFortunes: LoveFortune[] = [
     emoji: '💕',
     title: '中上签 - 情意绵绵',
     subtitle: '感情运势平稳上升，你对爱情的期待正在慢慢实现。耐心等待，属于你的缘分即将出现。',
+    description: '感情运势平稳上升，你对爱情的期待正在慢慢实现。耐心等待，属于你的缘分即将出现。',
     overview: '爱情的花蕾正在枝头悄然孕育，只需要再给它一点时间。春风轻拂，你的心动信号正在被宇宙接收。那个对的人，正在穿越人海向你走来。',
     lucky: { color: '浅紫色', number: 5, time: '10:00-12:00', direction: '东北', place: '公园' },
     tips: [
@@ -49,6 +52,7 @@ export const loveFortunes: LoveFortune[] = [
     emoji: '🌺',
     title: '中签 - 花开有时',
     subtitle: '感情需要耐心培育，不要急于求成。时机成熟时，爱情自然会绽放。现在是提升自己的好时机。',
+    description: '感情需要耐心培育，不要急于求成。时机成熟时，爱情自然会绽放。现在是提升自己的好时机。',
     overview: '每一朵花都有它的花期，爱情亦然。你的缘分如同含苞待放的花朵，需要阳光和雨露的滋养。现在是自我成长的最佳时机，当你盛开，蝴蝶自來。',
     lucky: { color: '白色', number: 8, time: '15:00-17:00', direction: '南', place: '健身房' },
     tips: [
@@ -63,6 +67,7 @@ export const loveFortunes: LoveFortune[] = [
     emoji: '🍃',
     title: '中平签 - 静待花开',
     subtitle: '感情运势较为平淡，不宜有太大动作。适合修身养性，等待最佳时机。切勿急于表白或做重大决定。',
+    description: '感情运势较为平淡，不宜有太大动作。适合修身养性，等待最佳时机。切勿急于表白或做重大决定。',
     overview: '湖面平静如镜，正是内心修养的好时光。爱情尚未成熟，强行追求只会惊扰了这份美好。静心等待，让时间和宇宙为你安排最合适的相遇。',
     lucky: { color: '淡蓝色', number: 2, time: '20:00-22:00', direction: '西北', place: '家中' },
     tips: [
@@ -77,6 +82,7 @@ export const loveFortunes: LoveFortune[] = [
     emoji: '🌧️',
     title: '下签 - 暂未相逢',
     subtitle: '今日不宜过于主动，感情方面可能会有小挫折。调整心态，不要灰心，好运很快就会来临。',
+    description: '今日不宜过于主动，感情方面可能会有小挫折。调整心态，不要灰心，好运很快就会来临。',
     overview: '乌云会散去，彩虹会出现。今天的挫折是为了明天更好的相遇暂时让心灵休憩，给自己一个拥抱。好运正在赶来的路上，属于你的爱情不会缺席。',
     lucky: { color: '灰色', number: 1, time: '08:00-10:00', direction: '北', place: '卧室' },
     tips: [
