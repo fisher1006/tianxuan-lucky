@@ -70,6 +70,9 @@ export interface DailyFortune {
   tip: string;
   overview?: string;
   lucky?: LuckyElement;
+  energyProfile?: EnergyProfile;
+  celestial?: Celestial;
+  readings?: Reading[];
 }
 
 // 相亲匹配度

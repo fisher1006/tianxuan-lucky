@@ -15,7 +15,13 @@ export const loveFortunes: LoveFortune[] = [
       { emoji: '👀', text: '注意身边的人，TA可能在偷偷看你' },
       { emoji: '💌', text: '遇到心动的人就主动表达' }
     ],
-    rank: 'super_lucky'
+    rank: 'super_lucky',
+    energyProfile: { romanticEnergy: 95, charmAura: 92, soulResonance: 90, emotionalDepth: 88, fateConnection: 96 },
+    celestial: { planet: '金星', aspect: '合金星', moonPhase: '满月' },
+    readings: [
+      { title: '命中注定之人', content: '那个人可能有着温暖的笑容，声音里带着轻微的笑意。你们会在一个充满阳光的地方相遇——也许是街角的咖啡馆，也许是公园的长椅上。' },
+      { title: '今日你的光', content: '你今天的魅力正处于年度峰值。所有被你吸引的人，都在被你的灵魂之光照亮。不要隐藏自己的光芒。' }
+    ]
   },
   {
     id: '2',
@@ -30,7 +36,13 @@ export const loveFortunes: LoveFortune[] = [
       { emoji: '✨', text: '保持魅力，好运会主动找上门' },
       { emoji: '💬', text: '对身边的人好一点，惊喜随时降临' }
     ],
-    rank: 'super_lucky'
+    rank: 'super_lucky',
+    energyProfile: { romanticEnergy: 88, charmAura: 85, soulResonance: 82, emotionalDepth: 78, fateConnection: 90 },
+    celestial: { planet: '金星', aspect: '水星拱', moonPhase: '盈凸月' },
+    readings: [
+      { title: '命中注定之人', content: '那个人的眼神里藏着星光让你们在文字的世界里相遇，从一本共同喜欢的书开始。' },
+      { title: '今日你的光', content: '你的气质今天格外迷人，举手投足间都在发光。这是表达心意的最佳时机。' }
+    ]
   },
   {
     id: '3',
@@ -45,7 +57,13 @@ export const loveFortunes: LoveFortune[] = [
       { emoji: '🎨', text: '参加兴趣活动，扩大社交圈' },
       { emoji: '😊', text: '保持真诚，待人友善' }
     ],
-    rank: 'lucky'
+    rank: 'lucky',
+    energyProfile: { romanticEnergy: 72, charmAura: 70, soulResonance: 75, emotionalDepth: 80, fateConnection: 68 },
+    celestial: { planet: '月亮', aspect: '土星拱', moonPhase: '上弦月' },
+    readings: [
+      { title: '命中注定之人', content: '那个人可能在你经常去的公园或美术馆出现，与你有着相似的审美和爱好。' },
+      { title: '今日你的光', content: '你的温柔今天特别动人，这种由内而外的魅力会吸引真正欣赏你的人。' }
+    ]
   },
   {
     id: '4',
@@ -60,7 +78,13 @@ export const loveFortunes: LoveFortune[] = [
       { emoji: '🌸', text: '不要过于执着结果，享受过程' },
       { emoji: '🎵', text: '多关注自己的兴趣爱好' }
     ],
-    rank: 'lucky'
+    rank: 'lucky',
+    energyProfile: { romanticEnergy: 65, charmAura: 68, soulResonance: 70, emotionalDepth: 72, fateConnection: 60 },
+    celestial: { planet: '火星', aspect: '太阳拱', moonPhase: '峨眉月' },
+    readings: [
+      { title: '命中注定之人', content: '那个人可能被你的自律和上进心吸引，在健身房或运动场所与你不期而遇。' },
+      { title: '今日你的光', content: '你今天的活力满满，这种健康的美比任何妆容都更加吸引人。' }
+    ]
   },
   {
     id: '5',
@@ -75,7 +99,13 @@ export const loveFortunes: LoveFortune[] = [
       { emoji: '📖', text: '利用这段时间阅读提升内在' },
       { emoji: '🌙', text: '时机未到，静心等待缘分' }
     ],
-    rank: 'average'
+    rank: 'average',
+    energyProfile: { romanticEnergy: 50, charmAura: 55, soulResonance: 65, emotionalDepth: 70, fateConnection: 48 },
+    celestial: { planet: '土星', aspect: '月亮拱', moonPhase: '新月' },
+    readings: [
+      { title: '命中注定之人', content: '那个人还在来时的路上，现在是你修炼内功的最佳时机。提升自己，才能在相遇时展现最好的自己。' },
+      { title: '今日你的光', content: '今天适合韬光养晦，你的内在之美正在悄悄积累，等待绽放的那一刻。' }
+    ]
   },
   {
     id: '6',
@@ -90,7 +120,13 @@ export const loveFortunes: LoveFortune[] = [
       { emoji: '🌈', text: '保持乐观，坏天气很快过去' },
       { emoji: '🎮', text: '做点让自己开心的事，放松心情' }
     ],
-    rank: 'bad'
+    rank: 'bad',
+    energyProfile: { romanticEnergy: 35, charmAura: 40, soulResonance: 50, emotionalDepth: 55, fateConnection: 30 },
+    celestial: { planet: '天王星', aspect: '火星冲', moonPhase: '残月' },
+    readings: [
+      { title: '命中注定之人', content: '今天不是相遇的好日子，但请相信，属于你的人终会出现。给自己一个拥抱，好运即将到来。' },
+      { title: '今日你的光', content: '今天你的能量可能在低点，但这也是你倾听内心、积蓄力量的好时机。爱自己最重要。' }
+    ]
   }
 ];
 
@@ -103,7 +139,13 @@ export const dailyFortunes: Omit<DailyFortune, 'date'>[] = [
     direction: '东南',
     time: '14:00-16:00',
     place: '咖啡馆',
-    tip: '今天是超级幸运日！表白必成功，邂逅必来电!'
+    tip: '今天是超级幸运日！表白必成功，邂逅必来电!',
+    energyProfile: { romanticEnergy: 95, charmAura: 92, soulResonance: 90, emotionalDepth: 88, fateConnection: 96 },
+    celestial: { planet: '金星', aspect: '合金星', moonPhase: '满月' },
+    readings: [
+      { title: '命中注定之人', content: '那个人可能有着温暖的笑容，声音里带着轻微的笑意。你们会在一个充满阳光的地方相遇——也许是街角的咖啡馆，也许是公园的长椅上。' },
+      { title: '今日你的光', content: '你今天的魅力正处于年度峰值。所有被你吸引的人，都在被你的灵魂之光照亮。不要隐藏自己的光芒。' }
+    ]
   },
   {
     loveIndex: 88,
@@ -112,7 +154,13 @@ export const dailyFortunes: Omit<DailyFortune, 'date'>[] = [
     direction: '东',
     time: '19:00-21:00',
     place: '书店',
-    tip: '运势极佳，遇到真爱的概率高达80%！'
+    tip: '运势极佳，遇到真爱的概率高达80%！',
+    energyProfile: { romanticEnergy: 88, charmAura: 85, soulResonance: 82, emotionalDepth: 78, fateConnection: 90 },
+    celestial: { planet: '金星', aspect: '水星拱', moonPhase: '盈凸月' },
+    readings: [
+      { title: '命中注定之人', content: '那个人的眼神里藏着星光让你们在文字的世界里相遇，从一本共同喜欢的书开始。' },
+      { title: '今日你的光', content: '你的气质今天格外迷人，举手投足间都在发光。这是表达心意的最佳时机。' }
+    ]
   },
   {
     loveIndex: 75,
@@ -121,7 +169,13 @@ export const dailyFortunes: Omit<DailyFortune, 'date'>[] = [
     direction: '东北',
     time: '10:00-12:00',
     place: '公园',
-    tip: '爱情运势上升，适合主动出击！'
+    tip: '爱情运势上升，适合主动出击！',
+    energyProfile: { romanticEnergy: 72, charmAura: 70, soulResonance: 75, emotionalDepth: 80, fateConnection: 68 },
+    celestial: { planet: '月亮', aspect: '土星拱', moonPhase: '上弦月' },
+    readings: [
+      { title: '命中注定之人', content: '那个人可能在你经常去的公园或美术馆出现，与你有着相似的审美和爱好。' },
+      { title: '今日你的光', content: '你的温柔今天特别动人，这种由内而外的魅力会吸引真正欣赏你的人。' }
+    ]
   },
   {
     loveIndex: 65,
@@ -130,7 +184,13 @@ export const dailyFortunes: Omit<DailyFortune, 'date'>[] = [
     direction: '南',
     time: '15:00-17:00',
     place: '健身房',
-    tip: '平稳的一天，保持好心情等待缘分。'
+    tip: '平稳的一天，保持好心情等待缘分。',
+    energyProfile: { romanticEnergy: 65, charmAura: 68, soulResonance: 70, emotionalDepth: 72, fateConnection: 60 },
+    celestial: { planet: '火星', aspect: '太阳拱', moonPhase: '峨眉月' },
+    readings: [
+      { title: '命中注定之人', content: '那个人可能被你的自律和上进心吸引，在健身房或运动场所与你不期而遇。' },
+      { title: '今日你的光', content: '你今天的活力满满，这种健康的美比任何妆容都更加吸引人。' }
+    ]
   },
   {
     loveIndex: 55,
@@ -139,7 +199,13 @@ export const dailyFortunes: Omit<DailyFortune, 'date'>[] = [
     direction: '西北',
     time: '20:00-22:00',
     place: '家中',
-    tip: '今天适合学习提升自己，感情稍后再议。'
+    tip: '今天适合学习提升自己，感情稍后再议。',
+    energyProfile: { romanticEnergy: 50, charmAura: 55, soulResonance: 65, emotionalDepth: 70, fateConnection: 48 },
+    celestial: { planet: '土星', aspect: '月亮拱', moonPhase: '新月' },
+    readings: [
+      { title: '命中注定之人', content: '那个人还在来时的路上，现在是你修炼内功的最佳时机。提升自己，才能在相遇时展现最好的自己。' },
+      { title: '今日你的光', content: '今天适合韬光养晦，你的内在之美正在悄悄积累，等待绽放的那一刻。' }
+    ]
   },
   {
     loveIndex: 40,
@@ -148,7 +214,13 @@ export const dailyFortunes: Omit<DailyFortune, 'date'>[] = [
     direction: '北',
     time: '08:00-10:00',
     place: '卧室',
-    tip: '今日宜静不宜动，给自己放个假吧。'
+    tip: '今日宜静不宜动，给自己放个假吧。',
+    energyProfile: { romanticEnergy: 35, charmAura: 40, soulResonance: 50, emotionalDepth: 55, fateConnection: 30 },
+    celestial: { planet: '天王星', aspect: '火星冲', moonPhase: '残月' },
+    readings: [
+      { title: '命中注定之人', content: '今天不是相遇的好日子，但请相信，属于你的人终会出现。给自己一个拥抱，好运即将到来。' },
+      { title: '今日你的光', content: '今天你的能量可能在低点，但这也是你倾听内心、积蓄力量的好时机。爱自己最重要。' }
+    ]
   }
 ];
 
@@ -184,7 +256,13 @@ export const reunionFortunes: ReunionFortune[] = [
       '回忆过去的美好时光能加分',
       '真诚道歉，表达真心'
     ],
-    rank: 'super_lucky'
+    rank: 'super_lucky',
+    energyProfile: { romanticEnergy: 95, charmAura: 90, soulResonance: 92, emotionalDepth: 88, fateConnection: 94 },
+    celestial: { planet: '金星', aspect: '合金星', moonPhase: '满月' },
+    readings: [
+      { title: '命中注定之人', content: '你们之间的羁绊从未真正断开，那根红线还系在彼此手腕上。只要一方主动，奇迹就会发生。' },
+      { title: '今日你的光', content: '你今天的复合能量达到峰值！对方能感受到你的诚意，这是一个可以改变命运的日子。' }
+    ]
   },
   {
     id: '2',
@@ -196,7 +274,13 @@ export const reunionFortunes: ReunionFortune[] = [
       '适当展现你的改变',
       '保持耐心，好事将近'
     ],
-    rank: 'super_lucky'
+    rank: 'super_lucky',
+    energyProfile: { romanticEnergy: 85, charmAura: 82, soulResonance: 80, emotionalDepth: 78, fateConnection: 85 },
+    celestial: { planet: '月亮', aspect: '金星拱', moonPhase: '盈凸月' },
+    readings: [
+      { title: '命中注定之人', content: '对方也在偷偷关注你的一切，你们都在等对方先迈出那一步。勇敢一点，幸福就在眼前。' },
+      { title: '今日你的光', content: '你散发的温柔气质今天特别强大，这种成熟的美比年轻时更加动人。' }
+    ]
   },
   {
     id: '3',
@@ -208,7 +292,13 @@ export const reunionFortunes: ReunionFortune[] = [
       '展示你积极的一面',
       '给自己和对方一些时间'
     ],
-    rank: 'lucky'
+    rank: 'lucky',
+    energyProfile: { romanticEnergy: 70, charmAura: 68, soulResonance: 72, emotionalDepth: 75, fateConnection: 65 },
+    celestial: { planet: '水星', aspect: '太阳拱', moonPhase: '上弦月' },
+    readings: [
+      { title: '命中注定之人', content: '复合的可能性正在萌芽，但需要耐心培养。不要急于求成，让感情自然生长。' },
+      { title: '今日你的光', content: '你今天的耐心和成熟是最吸引人的特质。这种淡定的魅力会让对方重新认识你。' }
+    ]
   },
   {
     id: '4',
@@ -220,7 +310,13 @@ export const reunionFortunes: ReunionFortune[] = [
       '提升自己的价值',
       '缘分天注定'
     ],
-    rank: 'average'
+    rank: 'average',
+    energyProfile: { romanticEnergy: 55, charmAura: 52, soulResonance: 60, emotionalDepth: 65, fateConnection: 50 },
+    celestial: { planet: '土星', aspect: '月亮刑', moonPhase: '峨眉月' },
+    readings: [
+      { title: '命中注定之人', content: '感情的结果还未确定，现在最重要的是做好自己。吸引力法则会帮助你吸引对的人。' },
+      { title: '今日你的光', content: '今天专注于自我提升是最好的选择。你的独立和自信是最美的样子。' }
+    ]
   },
   {
     id: '5',
@@ -232,7 +328,13 @@ export const reunionFortunes: ReunionFortune[] = [
       '把自己变得更好',
       '新感情可能会更适合你'
     ],
-    rank: 'average'
+    rank: 'average',
+    energyProfile: { romanticEnergy: 45, charmAura: 50, soulResonance: 55, emotionalDepth: 60, fateConnection: 42 },
+    celestial: { planet: '天王星', aspect: '太阳拱', moonPhase: '新月' },
+    readings: [
+      { title: '命中注定之人', content: '有时候，放手不是结束，而是新故事的开始。属于你的幸福可能在下一个转角。' },
+      { title: '今日你的光', content: '你的勇气和洒脱是今天最耀眼的光芒。接受过去，才能拥抱更好的未来。' }
+    ]
   },
   {
     id: '6',
@@ -244,7 +346,13 @@ export const reunionFortunes: ReunionFortune[] = [
       '把注意力转移到自己身上',
       '未来还有更好的人在等你'
     ],
-    rank: 'bad'
+    rank: 'bad',
+    energyProfile: { romanticEnergy: 25, charmAura: 30, soulResonance: 40, emotionalDepth: 45, fateConnection: 20 },
+    celestial: { planet: '冥王星', aspect: '火星冲', moonPhase: '残月' },
+    readings: [
+      { title: '命中注定之人', content: '这段缘分已经走到尽头，但请相信，每段结束都是新开始的铺垫。未来的幸福正在等你。' },
+      { title: '今日你的光', content: '今天虽然感性上很难受，但你是坚强的。好好爱自己，这才是最重要的事。' }
+    ]
   }
 ];
 
