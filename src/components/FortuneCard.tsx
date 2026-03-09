@@ -111,6 +111,129 @@ export default function FortuneCard({ type, data }: FortuneCardProps) {
                 </div>
               )}
               
+              {/* 能量画像 */}
+              {fortune.energyProfile && (
+                <div className="bg-gradient-to-r from-[#FFF9F5] to-[#FEF0E5] rounded-2xl p-4 mb-4">
+                  <h4 className="font-bold text-[#FF6B9D] mb-3">⚡ 能量画像</h4>
+                  <div className="grid grid-cols-2 gap-2">
+                    {fortune.energyProfile.romanticEnergy !== undefined && (
+                      <div className="bg-white rounded-xl p-2">
+                        <div className="text-xs text-gray-500">浪漫能量</div>
+                        <div className="font-bold text-[#4A3540]">{fortune.energyProfile.romanticEnergy}%</div>
+                      </div>
+                    )}
+                    {fortune.energyProfile.charmAura !== undefined && (
+                      <div className="bg-white rounded-xl p-2">
+                        <div className="text-xs text-gray-500">魅力气场</div>
+                        <div className="font-bold text-[#4A3540]">{fortune.energyProfile.charmAura}%</div>
+                      </div>
+                    )}
+                    {fortune.energyProfile.soulResonance !== undefined && (
+                      <div className="bg-white rounded-xl p-2">
+                        <div className="text-xs text-gray-500">灵魂共振</div>
+                        <div className="font-bold text-[#4A3540]">{fortune.energyProfile.soulResonance}%</div>
+                      </div>
+                    )}
+                    {fortune.energyProfile.emotionalDepth !== undefined && (
+                      <div className="bg-white rounded-xl p-2">
+                        <div className="text-xs text-gray-500">情感深度</div>
+                        <div className="font-bold text-[#4A3540]">{fortune.energyProfile.emotionalDepth}%</div>
+                      </div>
+                    )}
+                    {fortune.energyProfile.fateConnection !== undefined && (
+                      <div className="bg-white rounded-xl p-2">
+                        <div className="text-xs text-gray-500">命运牵绊</div>
+                        <div className="font-bold text-[#4A3540]">{fortune.energyProfile.fateConnection}%</div>
+                      </div>
+                    )}
+                    {fortune.energyProfile.spiritualAwareness !== undefined && (
+                      <div className="bg-white rounded-xl p-2">
+                        <div className="text-xs text-gray-500">灵性觉知</div>
+                        <div className="font-bold text-[#4A3540]">{fortune.energyProfile.spiritualAwareness}%</div>
+                      </div>
+                    )}
+                    {fortune.energyProfile.adventureIndex !== undefined && (
+                      <div className="bg-white rounded-xl p-2">
+                        <div className="text-xs text-gray-500">冒险指数</div>
+                        <div className="font-bold text-[#4A3540]">{fortune.energyProfile.adventureIndex}%</div>
+                      </div>
+                    )}
+                    {fortune.energyProfile.aestheticPerception !== undefined && (
+                      <div className="bg-white rounded-xl p-2">
+                        <div className="text-xs text-gray-500">美学感知</div>
+                        <div className="font-bold text-[#4A3540]">{fortune.energyProfile.aestheticPerception}%</div>
+                      </div>
+                    )}
+                    {fortune.energyProfile.earthEnergy !== undefined && (
+                      <div className="bg-white rounded-xl p-2">
+                        <div className="text-xs text-gray-500">大地能量</div>
+                        <div className="font-bold text-[#4A3540]">{fortune.energyProfile.earthEnergy}%</div>
+                      </div>
+                    )}
+                    {fortune.energyProfile.waterEnergy !== undefined && (
+                      <div className="bg-white rounded-xl p-2">
+                        <div className="text-xs text-gray-500">水流能量</div>
+                        <div className="font-bold text-[#4A3540]">{fortune.energyProfile.waterEnergy}%</div>
+                      </div>
+                    )}
+                    {fortune.energyProfile.windEnergy !== undefined && (
+                      <div className="bg-white rounded-xl p-2">
+                        <div className="text-xs text-gray-500">风之能量</div>
+                        <div className="font-bold text-[#4A3540]">{fortune.energyProfile.windEnergy}%</div>
+                      </div>
+                    )}
+                    {fortune.energyProfile.growthEnergy !== undefined && (
+                      <div className="bg-white rounded-xl p-2">
+                        <div className="text-xs text-gray-500">生长能量</div>
+                        <div className="font-bold text-[#4A3540]">{fortune.energyProfile.growthEnergy}%</div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+              
+              {/* 今日星象 */}
+              {fortune.celestial && (
+                <div className="bg-gradient-to-r from-[#F0F4FF] to-[#E8F4F8] rounded-2xl p-4 mb-4">
+                  <h4 className="font-bold text-[#6B8DD6] mb-3">🌟 今日星象</h4>
+                  <div className="flex flex-wrap gap-2 justify-center">
+                    {fortune.celestial.planet && (
+                      <div className="bg-white rounded-xl px-3 py-2">
+                        <span className="text-sm">🪐 {fortune.celestial.planet}</span>
+                      </div>
+                    )}
+                    {fortune.celestial.aspect && (
+                      <div className="bg-white rounded-xl px-3 py-2">
+                        <span className="text-sm">✨ {fortune.celestial.aspect}</span>
+                      </div>
+                    )}
+                    {fortune.celestial.moonPhase && (
+                      <div className="bg-white rounded-xl px-3 py-2">
+                        <span className="text-sm">🌙 {fortune.celestial.moonPhase}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+              
+              {/* 详细解读 */}
+              {fortune.readings && fortune.readings.length > 0 && (
+                <div className="space-y-3 mb-4">
+                  {fortune.readings.map((reading, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.3 + index * 0.1 }}
+                      className="bg-white rounded-2xl p-4 border border-[#FFF9F5]"
+                    >
+                      <h4 className="font-bold text-[#4A3540] mb-2">{reading.title}</h4>
+                      <p className="text-gray-600 text-sm leading-relaxed">{reading.content}</p>
+                    </motion.div>
+                  ))}
+                </div>
+              )}
+              
               <div className="bg-[#FFF9F5] rounded-2xl p-4">
                 <h4 className="font-bold text-[#FF6B9D] mb-3">💡 运势建议</h4>
                 <ul className="space-y-2">
@@ -228,6 +351,87 @@ export default function FortuneCard({ type, data }: FortuneCardProps) {
                   <div className="font-bold text-[#4A3540] text-xs">{place || '-'}</div>
                 </div>
               </div>
+              
+              {/* 能量画像 */}
+              {fortune.energyProfile && (
+                <div className="bg-gradient-to-r from-[#FFF9F5] to-[#FEF0E5] rounded-2xl p-4 mb-4">
+                  <h4 className="font-bold text-[#FF6B9D] mb-3">⚡ 能量画像</h4>
+                  <div className="grid grid-cols-2 gap-2">
+                    {fortune.energyProfile.romanticEnergy !== undefined && (
+                      <div className="bg-white rounded-xl p-2">
+                        <div className="text-xs text-gray-500">浪漫能量</div>
+                        <div className="font-bold text-[#4A3540]">{fortune.energyProfile.romanticEnergy}%</div>
+                      </div>
+                    )}
+                    {fortune.energyProfile.charmAura !== undefined && (
+                      <div className="bg-white rounded-xl p-2">
+                        <div className="text-xs text-gray-500">魅力气场</div>
+                        <div className="font-bold text-[#4A3540]">{fortune.energyProfile.charmAura}%</div>
+                      </div>
+                    )}
+                    {fortune.energyProfile.soulResonance !== undefined && (
+                      <div className="bg-white rounded-xl p-2">
+                        <div className="text-xs text-gray-500">灵魂共振</div>
+                        <div className="font-bold text-[#4A3540]">{fortune.energyProfile.soulResonance}%</div>
+                      </div>
+                    )}
+                    {fortune.energyProfile.emotionalDepth !== undefined && (
+                      <div className="bg-white rounded-xl p-2">
+                        <div className="text-xs text-gray-500">情感深度</div>
+                        <div className="font-bold text-[#4A3540]">{fortune.energyProfile.emotionalDepth}%</div>
+                      </div>
+                    )}
+                    {fortune.energyProfile.fateConnection !== undefined && (
+                      <div className="bg-white rounded-xl p-2">
+                        <div className="text-xs text-gray-500">命运牵绊</div>
+                        <div className="font-bold text-[#4A3540]">{fortune.energyProfile.fateConnection}%</div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+              
+              {/* 今日星象 */}
+              {fortune.celestial && (
+                <div className="bg-gradient-to-r from-[#F0F4FF] to-[#E8F4F8] rounded-2xl p-4 mb-4">
+                  <h4 className="font-bold text-[#6B8DD6] mb-3">🌟 今日星象</h4>
+                  <div className="flex flex-wrap gap-2 justify-center">
+                    {fortune.celestial.planet && (
+                      <div className="bg-white rounded-xl px-3 py-2">
+                        <span className="text-sm">🪐 {fortune.celestial.planet}</span>
+                      </div>
+                    )}
+                    {fortune.celestial.aspect && (
+                      <div className="bg-white rounded-xl px-3 py-2">
+                        <span className="text-sm">✨ {fortune.celestial.aspect}</span>
+                      </div>
+                    )}
+                    {fortune.celestial.moonPhase && (
+                      <div className="bg-white rounded-xl px-3 py-2">
+                        <span className="text-sm">🌙 {fortune.celestial.moonPhase}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+              
+              {/* 详细解读 */}
+              {fortune.readings && fortune.readings.length > 0 && (
+                <div className="space-y-3 mb-4">
+                  {fortune.readings.map((reading, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.3 + index * 0.1 }}
+                      className="bg-white rounded-2xl p-4 border border-[#FFF9F5]"
+                    >
+                      <h4 className="font-bold text-[#4A3540] mb-2">{reading.title}</h4>
+                      <p className="text-gray-600 text-sm leading-relaxed">{reading.content}</p>
+                    </motion.div>
+                  ))}
+                </div>
+              )}
               
               {/* 提示 */}
               <div className="bg-gradient-to-r from-[#FF6B9D]/10 to-[#C4A7E7]/10 rounded-2xl p-3">
