@@ -1,54 +1,40 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import InviteInput from '@/components/InviteInput';
 
+const floatingDecorations = [
+  { left: '10%', top: '14%', duration: 3.1, delay: 0.2 },
+  { left: '26%', top: '70%', duration: 4.0, delay: 0.7 },
+  { left: '41%', top: '22%', duration: 3.6, delay: 1.1 },
+  { left: '58%', top: '80%', duration: 4.4, delay: 0.5 },
+  { left: '71%', top: '34%', duration: 3.8, delay: 1.4 },
+  { left: '86%', top: '66%', duration: 4.2, delay: 0.9 },
+  { left: '19%', top: '46%', duration: 3.5, delay: 1.6 },
+  { left: '79%', top: '16%', duration: 3.9, delay: 0.3 },
+];
+
 export default function VerifyPage() {
-  const [isVerified, setIsVerified] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-4xl animate-bounce">🔐</div>
-      </div>
-    );
-  }
-
-  // 如果已经验证，直接跳转首页
-  if (typeof window !== 'undefined' && localStorage.getItem('invite_verified') === 'true') {
-    if (typeof window !== 'undefined') {
-      window.location.href = '/';
-    }
-    return null;
-  }
-
   return (
     <div className="min-h-screen p-4">
-      {/* 背景装饰 */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        {[...Array(8)].map((_, i) => (
+        {floatingDecorations.map((item, i) => (
           <motion.div
             key={i}
             className="absolute text-2xl opacity-20"
             style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
+              left: item.left,
+              top: item.top,
             }}
             animate={{
               y: [0, -20, 0],
               opacity: [0.1, 0.2, 0.1],
             }}
             transition={{
-              duration: 3 + Math.random() * 2,
+              duration: item.duration,
               repeat: Infinity,
-              delay: Math.random() * 2,
+              delay: item.delay,
             }}
           >
             {['🔐', '✨', '💖', '🌸'][i % 4]}
@@ -56,12 +42,10 @@ export default function VerifyPage() {
         ))}
       </div>
 
-      {/* 返回首页 */}
       <Link href="/" className="inline-flex items-center gap-2 text-gray-500 py-4">
         <span>←</span> 返回首页
       </Link>
 
-      {/* 标题 */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -75,10 +59,8 @@ export default function VerifyPage() {
         </p>
       </motion.div>
 
-      {/* 邀请码输入 */}
-      <InviteInput onVerified={() => setIsVerified(true)} />
+      <InviteInput />
 
-      {/* 提示信息 */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

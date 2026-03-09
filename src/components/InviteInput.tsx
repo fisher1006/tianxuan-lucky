@@ -2,12 +2,17 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { validateInviteCode, setLocalVerifiedStatus } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
 
 interface InviteInputProps {
   onVerified?: () => void;
 }
+
+const STATUS_MESSAGE: Record<string, string> = {
+  invalid: '邀请码无效',
+  used: '邀请码已使用',
+  expired: '邀请码已过期',
+};
 
 export default function InviteInput({ onVerified }: InviteInputProps) {
   const [code, setCode] = useState('');
@@ -19,29 +24,35 @@ export default function InviteInput({ onVerified }: InviteInputProps) {
   const handleVerify = async () => {
     setError('');
     setLoading(true);
-    
-    // 模拟网络延迟
-    await new Promise(resolve => setTimeout(resolve, 800));
-    
-    const result = validateInviteCode(code);
-    
-    if (result.valid) {
-      setSuccess(true);
-      setLocalVerifiedStatus(true);
-      
-      // 延迟跳转到首页
-      setTimeout(() => {
-        router.push('/');
-      }, 1500);
-      
-      if (onVerified) {
-        onVerified();
+
+    try {
+      const response = await fetch('/api/invite/redeem', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ code }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        setSuccess(true);
+
+        setTimeout(() => {
+          router.push('/');
+          router.refresh();
+        }, 800);
+
+        onVerified?.();
+      } else {
+        setError(result.error || STATUS_MESSAGE[result.status] || '邀请码无效');
       }
-    } else {
-      setError(result.error || '邀请码无效');
+    } catch {
+      setError('邀请码服务暂时不可用，请稍后再试');
+    } finally {
+      setLoading(false);
     }
-    
-    setLoading(false);
   };
 
   return (
@@ -50,17 +61,17 @@ export default function InviteInput({ onVerified }: InviteInputProps) {
         <h2 className="text-2xl font-bold text-center text-[#4A3540] mb-6">
           🔐 输入邀请码解锁
         </h2>
-        
+
         <input
           type="text"
           value={code}
           onChange={(e) => setCode(e.target.value.toUpperCase())}
-          placeholder="例: LOVE-ABCD.EFGH"
+          placeholder="例: TIAN-ABCD-EFGH"
           className="w-full px-4 py-3 text-center text-lg tracking-wider border-2 border-[#FF6B9D]/30 rounded-2xl focus:border-[#FF6B9D] focus:outline-none transition-colors bg-white/50"
         />
-        
+
         {error && (
-          <motion.p 
+          <motion.p
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-red-500 text-center mt-3 text-sm"
@@ -68,7 +79,7 @@ export default function InviteInput({ onVerified }: InviteInputProps) {
             {error}
           </motion.p>
         )}
-        
+
         <motion.button
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
@@ -96,13 +107,12 @@ export default function InviteInput({ onVerified }: InviteInputProps) {
             '立即解锁'
           )}
         </motion.button>
-        
+
         <p className="text-center text-gray-500 text-sm mt-4">
           需要邀请码？请联系客服获取
         </p>
       </div>
-      
-      {/* 成功动画 */}
+
       {success && (
         <motion.div
           initial={{ opacity: 0 }}
@@ -112,21 +122,21 @@ export default function InviteInput({ onVerified }: InviteInputProps) {
           {[...Array(20)].map((_, i) => (
             <motion.div
               key={i}
-              initial={{ 
-                x: '50%', 
-                y: '50%', 
+              initial={{
+                x: '50%',
+                y: '50%',
                 scale: 0,
-                rotate: Math.random() * 360
+                rotate: Math.random() * 360,
               }}
-              animate={{ 
-                x: `${Math.random() * 100}%`, 
-                y: `${Math.random() * 100}%`, 
+              animate={{
+                x: `${Math.random() * 100}%`,
+                y: `${Math.random() * 100}%`,
                 scale: 1,
-                opacity: 0
+                opacity: 0,
               }}
-              transition={{ 
-                duration: 1 + Math.random(), 
-                delay: Math.random() * 0.3 
+              transition={{
+                duration: 1 + Math.random(),
+                delay: Math.random() * 0.3,
               }}
               className="absolute text-2xl"
             >

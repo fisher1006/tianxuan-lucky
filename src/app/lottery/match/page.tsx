@@ -1,15 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import DrawAnimation from '@/components/DrawAnimation';
 import FortuneCard from '@/components/FortuneCard';
 import ShareButton from '@/components/ShareButton';
 import { calculateMatchScore, getMatchResult } from '@/data/fortunes';
 import { MatchResult } from '@/types';
-import { getLocalVerifiedStatus } from '@/lib/utils';
 
 const zodiacSigns = [
   '白羊座', '金牛座', '双子座', '巨蟹座',
@@ -24,26 +22,6 @@ export default function MatchPage() {
   const [otherBirthday, setOtherBirthday] = useState('');
   const [otherZodiac, setOtherZodiac] = useState('');
   const [result, setResult] = useState<MatchResult | null>(null);
-  const [isVerified, setIsVerified] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const router = useRouter();
-
-  useEffect(() => {
-    setMounted(true);
-    const verified = getLocalVerifiedStatus();
-    setIsVerified(verified);
-    if (!verified) {
-      router.push('/verify');
-    }
-  }, [router]);
-
-  if (!mounted || !isVerified) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-gray-500">验证中...</div>
-      </div>
-    );
-  }
 
   const handleMatch = () => {
     if (!yourBirthday || !otherBirthday) return;

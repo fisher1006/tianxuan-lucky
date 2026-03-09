@@ -1,40 +1,18 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import DrawAnimation from '@/components/DrawAnimation';
 import FortuneCard from '@/components/FortuneCard';
 import ShareButton from '@/components/ShareButton';
 import { getDailyFortuneByDate } from '@/data/fortunes';
 import { DailyFortune } from '@/types';
-import { getLocalVerifiedStatus } from '@/lib/utils';
 
 export default function TodayFortunePage() {
   const [step, setStep] = useState<'input' | 'drawing' | 'result'>('input');
   const [nickname, setNickname] = useState('');
   const [result, setResult] = useState<DailyFortune | null>(null);
-  const [isVerified, setIsVerified] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const router = useRouter();
-
-  useEffect(() => {
-    setMounted(true);
-    const verified = getLocalVerifiedStatus();
-    setIsVerified(verified);
-    if (!verified) {
-      router.push('/verify');
-    }
-  }, [router]);
-
-  if (!mounted || !isVerified) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-gray-500">验证中...</div>
-      </div>
-    );
-  }
 
   const handleDraw = () => {
     if (!nickname) return;
