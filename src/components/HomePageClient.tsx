@@ -53,7 +53,7 @@ const floatingDecorations = [
   { left: '14%', top: '48%', duration: 4.0, delay: 1.0 },
 ];
 
-const INVITE_GUIDE_URL = 'https://m.tb.cn/h.iWkvBKV?tk=ASOXUvkoITC';
+const INVITE_GUIDE_URL = process.env.NEXT_PUBLIC_INVITE_GUIDE_URL || 'https://m.tb.cn/h.iWkvBKV?tk=ASOXUvkoITC';
 
 interface HomePageClientProps {
   isVerified: boolean;

@@ -15,7 +15,7 @@ const STATUS_MESSAGE: Record<string, string> = {
   expired: '邀请码已过期',
 };
 
-const INVITE_GUIDE_URL = 'https://m.tb.cn/h.iWkvBKV?tk=ASOXUvkoITC';
+const INVITE_GUIDE_URL = process.env.NEXT_PUBLIC_INVITE_GUIDE_URL || 'https://m.tb.cn/h.iWkvBKV?tk=ASOXUvkoITC';
 
 export default function InviteInput({ onVerified }: InviteInputProps) {
   const [code, setCode] = useState('');
