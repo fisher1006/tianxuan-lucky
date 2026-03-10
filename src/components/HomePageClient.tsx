@@ -2,6 +2,8 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { useEffect } from 'react';
+import { INVITE_SESSION_STORAGE_KEY } from '@/lib/invite-auth';
 
 const features = [
   {
@@ -58,6 +60,26 @@ interface HomePageClientProps {
 }
 
 export default function HomePageClient({ isVerified }: HomePageClientProps) {
+  useEffect(() => {
+    if (!isVerified) return;
+    if (window.localStorage.getItem(INVITE_SESSION_STORAGE_KEY)) return;
+
+    const syncInviteSession = async () => {
+      try {
+        const response = await fetch('/api/invite/session', { method: 'GET' });
+        const result = await response.json();
+
+        if (response.ok && result.success && result.sessionToken) {
+          window.localStorage.setItem(INVITE_SESSION_STORAGE_KEY, result.sessionToken);
+        }
+      } catch {
+        // 忽略同步失败，不影响当前会话
+      }
+    };
+
+    void syncInviteSession();
+  }, [isVerified]);
+
   if (!isVerified) {
     return (
       <div className="min-h-screen flex items-center justify-center p-4">

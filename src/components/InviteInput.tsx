@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { INVITE_CODE_STORAGE_KEY } from '@/lib/invite-auth';
+import { INVITE_CODE_STORAGE_KEY, INVITE_SESSION_STORAGE_KEY } from '@/lib/invite-auth';
 
 interface InviteInputProps {
   onVerified?: () => void;
@@ -29,37 +29,41 @@ export default function InviteInput({ onVerified }: InviteInputProps) {
     let cancelled = false;
 
     const restoreInviteAccess = async () => {
+      const savedSessionToken = window.localStorage.getItem(INVITE_SESSION_STORAGE_KEY);
       const savedCode = window.localStorage.getItem(INVITE_CODE_STORAGE_KEY);
 
-      if (!savedCode) {
+      if (savedCode) {
+        setCode(savedCode);
+      }
+
+      if (!savedSessionToken) {
         setRestoring(false);
         return;
       }
 
-      setCode(savedCode);
-
       try {
-        const response = await fetch('/api/invite/validate', {
+        const response = await fetch('/api/invite/session', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ code: savedCode }),
+          body: JSON.stringify({ token: savedSessionToken }),
         });
 
         const result = await response.json();
 
         if (cancelled) return;
 
-        if (response.ok && result.valid) {
+        if (response.ok && result.success) {
+          if (result.sessionToken) {
+            window.localStorage.setItem(INVITE_SESSION_STORAGE_KEY, result.sessionToken);
+          }
           router.push('/');
           router.refresh();
           return;
         }
 
-        if (result.status === 'expired' || result.status === 'invalid') {
-          window.localStorage.removeItem(INVITE_CODE_STORAGE_KEY);
-        }
+        window.localStorage.removeItem(INVITE_SESSION_STORAGE_KEY);
       } catch {
         // 忽略恢复失败，保留输入框让用户手动处理
       } finally {
@@ -93,6 +97,9 @@ export default function InviteInput({ onVerified }: InviteInputProps) {
 
       if (response.ok && result.success) {
         window.localStorage.setItem(INVITE_CODE_STORAGE_KEY, code);
+        if (result.sessionToken) {
+          window.localStorage.setItem(INVITE_SESSION_STORAGE_KEY, result.sessionToken);
+        }
         setSuccess(true);
 
         setTimeout(() => {
