@@ -14,6 +14,8 @@ const STATUS_MESSAGE: Record<string, string> = {
   expired: '邀请码已过期',
 };
 
+const INVITE_GUIDE_URL = 'https://m.tb.cn/h.iWkvBKV?tk=ASOXUvkoITC';
+
 export default function InviteInput({ onVerified }: InviteInputProps) {
   const [code, setCode] = useState('');
   const [error, setError] = useState('');
@@ -108,8 +110,18 @@ export default function InviteInput({ onVerified }: InviteInputProps) {
           )}
         </motion.button>
 
-        <p className="text-center text-gray-500 text-sm mt-4">
-          需要邀请码？请联系客服获取
+        <a
+          href={INVITE_GUIDE_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex w-full items-center justify-center gap-2 mt-3 py-3 rounded-2xl border border-[#FF6B9D]/25 bg-[#FFF7FB] text-[#B4557A] font-medium transition-all hover:border-[#FF6B9D]/40 hover:bg-[#FFF0F7]"
+        >
+          <span>🎫</span>
+          <span>获取邀请码指引</span>
+        </a>
+
+        <p className="text-center text-gray-500 text-sm mt-4 leading-6">
+          需要邀请码？可前往闲鱼商品查看获取方式
         </p>
       </div>
 

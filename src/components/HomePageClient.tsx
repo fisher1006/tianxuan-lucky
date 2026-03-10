@@ -51,6 +51,8 @@ const floatingDecorations = [
   { left: '14%', top: '48%', duration: 4.0, delay: 1.0 },
 ];
 
+const INVITE_GUIDE_URL = 'https://m.tb.cn/h.iWkvBKV?tk=ASOXUvkoITC';
+
 interface HomePageClientProps {
   isVerified: boolean;
 }
@@ -77,12 +79,23 @@ export default function HomePageClient({ isVerified }: HomePageClientProps) {
           <p className="text-gray-500 mb-8">
             需要邀请码才能使用
           </p>
-          <Link
-            href="/verify"
-            className="inline-block px-8 py-4 bg-gradient-to-r from-[#FF6B9D] to-[#C4A7E7] text-white font-bold rounded-2xl shadow-lg hover:shadow-xl transition-all"
-          >
-            输入邀请码解锁
-          </Link>
+          <div className="flex flex-col items-center gap-3">
+            <Link
+              href="/verify"
+              className="inline-block px-8 py-4 bg-gradient-to-r from-[#FF6B9D] to-[#C4A7E7] text-white font-bold rounded-2xl shadow-lg hover:shadow-xl transition-all"
+            >
+              输入邀请码解锁
+            </Link>
+            <a
+              href={INVITE_GUIDE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl border border-[#FF6B9D]/25 bg-white/70 text-[#B4557A] font-medium shadow-sm transition-all hover:bg-white hover:border-[#FF6B9D]/40"
+            >
+              <span>🎫</span>
+              <span>获取邀请码指引</span>
+            </a>
+          </div>
         </motion.div>
       </div>
     );
