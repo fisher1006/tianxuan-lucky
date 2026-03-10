@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
+import { INVITE_CODE_STORAGE_KEY } from '@/lib/invite-auth';
 
 interface InviteInputProps {
   onVerified?: () => void;
@@ -20,8 +21,60 @@ export default function InviteInput({ onVerified }: InviteInputProps) {
   const [code, setCode] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [restoring, setRestoring] = useState(true);
   const [success, setSuccess] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const restoreInviteAccess = async () => {
+      const savedCode = window.localStorage.getItem(INVITE_CODE_STORAGE_KEY);
+
+      if (!savedCode) {
+        setRestoring(false);
+        return;
+      }
+
+      setCode(savedCode);
+
+      try {
+        const response = await fetch('/api/invite/validate', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ code: savedCode }),
+        });
+
+        const result = await response.json();
+
+        if (cancelled) return;
+
+        if (response.ok && result.valid) {
+          router.push('/');
+          router.refresh();
+          return;
+        }
+
+        if (result.status === 'expired' || result.status === 'invalid') {
+          window.localStorage.removeItem(INVITE_CODE_STORAGE_KEY);
+        }
+      } catch {
+        // 忽略恢复失败，保留输入框让用户手动处理
+      } finally {
+        if (!cancelled) {
+          setRestoring(false);
+        }
+      }
+    };
+
+    void restoreInviteAccess();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [router]);
 
   const handleVerify = async () => {
     setError('');
@@ -39,6 +92,7 @@ export default function InviteInput({ onVerified }: InviteInputProps) {
       const result = await response.json();
 
       if (response.ok && result.success) {
+        window.localStorage.setItem(INVITE_CODE_STORAGE_KEY, code);
         setSuccess(true);
 
         setTimeout(() => {
@@ -56,6 +110,16 @@ export default function InviteInput({ onVerified }: InviteInputProps) {
       setLoading(false);
     }
   };
+
+  if (restoring) {
+    return (
+      <div className="w-full max-w-md mx-auto">
+        <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl text-center text-gray-500">
+          正在恢复邀请码状态...
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full max-w-md mx-auto">
@@ -86,7 +150,7 @@ export default function InviteInput({ onVerified }: InviteInputProps) {
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           onClick={handleVerify}
-          disabled={loading || !code}
+          disabled={loading || restoring || !code}
           className="w-full mt-6 py-4 bg-gradient-to-r from-[#FF6B9D] to-[#C4A7E7] text-white font-bold rounded-2xl shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all"
         >
           {loading ? (

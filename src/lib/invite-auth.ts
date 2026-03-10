@@ -1,4 +1,5 @@
 export const INVITE_ACCESS_COOKIE = 'invite_access';
+export const INVITE_CODE_STORAGE_KEY = 'tianxuan_invite_code';
 
 export function getInviteProductKey(): string {
   return process.env.INVITE_PRODUCT_KEY || 'tianxuan-lucky';
