@@ -20,7 +20,7 @@ export default function ShareButton({ title, text }: ShareButtonProps) {
           title: '天选桃花运',
           text: shareText,
         });
-      } catch (err) {
+      } catch {
         // 用户取消分享
       }
     } else {

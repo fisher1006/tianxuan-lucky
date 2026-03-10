@@ -15,3 +15,7 @@ export function getInviteApiBaseUrl(): string {
 
   return apiBaseUrl;
 }
+
+export function getInviteGuideUrl(): string {
+  return (process.env.NEXT_PUBLIC_INVITE_GUIDE_URL || 'https://m.tb.cn/h.ie7IijM?tk=sMOqUvGcot4').trim();
+}
