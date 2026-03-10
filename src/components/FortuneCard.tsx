@@ -447,14 +447,18 @@ export default function FortuneCard({ type, data }: FortuneCardProps) {
   if (type === 'match') {
     const result = data as MatchResult;
     const lucky = result.lucky;
-    
+    const isNewTipFormat = (tip: string | FortuneTip): tip is FortuneTip => {
+      return typeof tip === 'object' && 'emoji' in tip && 'text' in tip;
+    };
+    const rank = result.rank || (result.score >= 88 ? 'super_lucky' : result.score >= 76 ? 'lucky' : result.score >= 52 ? 'average' : 'bad');
+
     return (
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="w-full max-w-md mx-auto"
       >
-        <div className="bg-gradient-to-br from-pink-400 to-purple-500 rounded-3xl p-1 shadow-2xl">
+        <div className={`bg-gradient-to-br ${rankColors[rank]} rounded-3xl p-1 shadow-2xl`}>
           <div className="bg-white rounded-[22px] p-6">
             <div className="text-center">
               <motion.div
@@ -463,10 +467,9 @@ export default function FortuneCard({ type, data }: FortuneCardProps) {
                 transition={{ type: 'spring', delay: 0.2 }}
                 className="text-6xl mb-3"
               >
-                {result.score >= 80 ? '💖' : result.score >= 60 ? '💕' : '💔'}
+                {result.score >= 88 ? '💞' : result.score >= 76 ? '💖' : result.score >= 64 ? '💕' : result.score >= 52 ? '💫' : '💔'}
               </motion.div>
-              
-              {/* 匹配度数字 */}
+
               <div className="mb-3">
                 <motion.span
                   initial={{ opacity: 0 }}
@@ -475,28 +478,35 @@ export default function FortuneCard({ type, data }: FortuneCardProps) {
                 >
                   {result.score}%
                 </motion.span>
+                <p className="text-gray-500 text-sm mt-1">匹配指数</p>
               </div>
-              
-              <h3 className="text-2xl font-bold text-[#4A3540] mb-2">
+
+              <h3 className="text-2xl font-bold text-[#4A3540] mb-1">
                 {result.comment}
               </h3>
-              
-              {/* 诗意解读 */}
+
+              {result.subtitle && (
+                <p className="text-gray-400 text-sm mb-3">{result.subtitle}</p>
+              )}
+
+              <div className={`inline-block px-4 py-1 rounded-full text-white text-sm font-medium mb-4 bg-gradient-to-r ${rankColors[rank]}`}>
+                {rankLabels[rank]}
+              </div>
+
               {result.overview && (
-                <div className="bg-gradient-to-r from-[#FFF9F5] to-[#FEF0E5] rounded-2xl p-3 mb-3">
+                <div className="bg-gradient-to-r from-[#FFF9F5] to-[#FEF0E5] rounded-2xl p-4 mb-4">
                   <p className="text-gray-700 leading-relaxed text-sm">
                     {result.overview}
                   </p>
                 </div>
               )}
-              
-              <div className="bg-[#FFF9F5] rounded-2xl p-3 mb-3">
-                <p className="text-gray-600 text-sm">{result.advice}</p>
+
+              <div className="bg-[#FFF9F5] rounded-2xl p-4 mb-4">
+                <p className="text-gray-600 text-sm leading-relaxed">{result.advice}</p>
               </div>
-              
-              {/* 幸运元素展示 - 5列布局 */}
+
               {lucky && (
-                <div className="grid grid-cols-5 gap-1.5 mb-3">
+                <div className="grid grid-cols-5 gap-1.5 mb-4">
                   <div className="bg-[#FFF9F5] rounded-xl p-2">
                     <div className="text-lg mb-0.5">🎨</div>
                     <div className="text-xs text-gray-500">幸运色</div>
@@ -524,14 +534,104 @@ export default function FortuneCard({ type, data }: FortuneCardProps) {
                   </div>
                 </div>
               )}
-              
-              {/* 进度条 */}
-              <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+
+              {result.energyProfile && (
+                <div className="bg-gradient-to-r from-[#FFF9F5] to-[#FEF0E5] rounded-2xl p-4 mb-4">
+                  <h4 className="font-bold text-[#FF6B9D] mb-3">⚡ 匹配画像</h4>
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="bg-white rounded-xl p-2">
+                      <div className="text-xs text-gray-500">浪漫能量</div>
+                      <div className="font-bold text-[#4A3540]">{result.energyProfile.romanticEnergy}%</div>
+                    </div>
+                    <div className="bg-white rounded-xl p-2">
+                      <div className="text-xs text-gray-500">魅力气场</div>
+                      <div className="font-bold text-[#4A3540]">{result.energyProfile.charmAura}%</div>
+                    </div>
+                    <div className="bg-white rounded-xl p-2">
+                      <div className="text-xs text-gray-500">灵魂共振</div>
+                      <div className="font-bold text-[#4A3540]">{result.energyProfile.soulResonance}%</div>
+                    </div>
+                    <div className="bg-white rounded-xl p-2">
+                      <div className="text-xs text-gray-500">情感深度</div>
+                      <div className="font-bold text-[#4A3540]">{result.energyProfile.emotionalDepth}%</div>
+                    </div>
+                    <div className="bg-white rounded-xl p-2 col-span-2">
+                      <div className="text-xs text-gray-500">命运牵绊</div>
+                      <div className="font-bold text-[#4A3540]">{result.energyProfile.fateConnection}%</div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {result.celestial && (
+                <div className="bg-gradient-to-r from-[#F0F4FF] to-[#E8F4F8] rounded-2xl p-4 mb-4">
+                  <h4 className="font-bold text-[#6B8DD6] mb-3">🌟 关系星象</h4>
+                  <div className="flex flex-wrap gap-2 justify-center">
+                    <div className="bg-white rounded-xl px-3 py-2">
+                      <span className="text-sm">🪐 {result.celestial.planet}</span>
+                    </div>
+                    <div className="bg-white rounded-xl px-3 py-2">
+                      <span className="text-sm">✨ {result.celestial.aspect}</span>
+                    </div>
+                    <div className="bg-white rounded-xl px-3 py-2">
+                      <span className="text-sm">🌙 {result.celestial.moonPhase}</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {result.readings && result.readings.length > 0 && (
+                <div className="space-y-3 mb-4">
+                  {result.readings.map((reading, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.3 + index * 0.1 }}
+                      className="bg-white rounded-2xl p-4 border border-[#FFF9F5] text-left"
+                    >
+                      <h4 className="font-bold text-[#4A3540] mb-2">{reading.title}</h4>
+                      <p className="text-gray-600 text-sm leading-relaxed">{reading.content}</p>
+                    </motion.div>
+                  ))}
+                </div>
+              )}
+
+              {result.tips && result.tips.length > 0 && (
+                <div className="bg-[#FFF9F5] rounded-2xl p-4 text-left">
+                  <h4 className="font-bold text-[#FF6B9D] mb-3 text-center">💡 相处建议</h4>
+                  <ul className="space-y-2">
+                    {result.tips.map((tip, index) => (
+                      <motion.li
+                        key={index}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.4 + index * 0.1 }}
+                        className="text-gray-600 text-sm flex items-start gap-2"
+                      >
+                        {isNewTipFormat(tip) ? (
+                          <>
+                            <span className="text-lg">{tip.emoji}</span>
+                            <span>{tip.text}</span>
+                          </>
+                        ) : (
+                          <>
+                            <span className="text-[#FF6B9D]">•</span>
+                            {tip}
+                          </>
+                        )}
+                      </motion.li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              <div className="mt-4 h-2 bg-gray-200 rounded-full overflow-hidden">
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: `${result.score}%` }}
                   transition={{ duration: 1, delay: 0.3 }}
-                  className={`h-full ${result.score >= 70 ? 'bg-gradient-to-r from-pink-400 to-rose-500' : result.score >= 50 ? 'bg-gradient-to-r from-yellow-400 to-orange-400' : 'bg-gradient-to-r from-gray-400 to-gray-500'}`}
+                  className={`h-full ${result.score >= 76 ? 'bg-gradient-to-r from-pink-400 to-rose-500' : result.score >= 52 ? 'bg-gradient-to-r from-yellow-400 to-orange-400' : 'bg-gradient-to-r from-gray-400 to-gray-500'}`}
                 />
               </div>
             </div>

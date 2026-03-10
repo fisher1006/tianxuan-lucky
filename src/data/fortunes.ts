@@ -224,24 +224,260 @@ export const dailyFortunes: Omit<DailyFortune, 'date'>[] = [
   }
 ];
 
-// 相亲匹配度评语
-export const matchComments: { min: number; max: number; comment: string; advice: string }[] = [
-  { min: 90, max: 100, comment: '天作之合！', advice: '你们是天生一对，珍惜这段缘分！' },
-  { min: 80, max: 89, comment: '心意相通', advice: '彼此很有默契，继续深入了解吧！' },
-  { min: 70, max: 79, comment: '潜力无限', advice: '需要双方共同努力培养感情。' },
-  { min: 60, max: 69, comment: '还需了解', advice: '多沟通多交流，感情需要时间沉淀。' },
-  { min: 50, max: 59, comment: '有缘无分', advice: '或许可以做朋友，不强求。' },
-  { min: 0, max: 49, comment: '缘浅缘散', advice: '不建议深入发展，保持普通朋友关系即可。' }
+const zodiacCompatibility: Record<string, { match: string[]; okay: string[]; challenge: string[] }> = {
+  '白羊座': { match: ['狮子座', '射手座', '双子座'], okay: ['水瓶座', '天秤座'], challenge: ['巨蟹座', '摩羯座'] },
+  '金牛座': { match: ['处女座', '摩羯座', '巨蟹座'], okay: ['双鱼座', '金牛座'], challenge: ['狮子座', '水瓶座'] },
+  '双子座': { match: ['天秤座', '水瓶座', '白羊座'], okay: ['狮子座', '射手座'], challenge: ['处女座', '双鱼座'] },
+  '巨蟹座': { match: ['天蝎座', '双鱼座', '金牛座'], okay: ['处女座', '巨蟹座'], challenge: ['白羊座', '天秤座'] },
+  '狮子座': { match: ['白羊座', '射手座', '双子座'], okay: ['天秤座', '狮子座'], challenge: ['金牛座', '天蝎座'] },
+  '处女座': { match: ['金牛座', '摩羯座', '巨蟹座'], okay: ['天蝎座', '处女座'], challenge: ['双子座', '射手座'] },
+  '天秤座': { match: ['双子座', '水瓶座', '狮子座'], okay: ['射手座', '天秤座'], challenge: ['巨蟹座', '摩羯座'] },
+  '天蝎座': { match: ['巨蟹座', '双鱼座', '摩羯座'], okay: ['处女座', '天蝎座'], challenge: ['狮子座', '水瓶座'] },
+  '射手座': { match: ['白羊座', '狮子座', '水瓶座'], okay: ['天秤座', '双子座'], challenge: ['处女座', '双鱼座'] },
+  '摩羯座': { match: ['金牛座', '处女座', '天蝎座'], okay: ['双鱼座', '摩羯座'], challenge: ['白羊座', '天秤座'] },
+  '水瓶座': { match: ['双子座', '天秤座', '射手座'], okay: ['白羊座', '水瓶座'], challenge: ['金牛座', '天蝎座'] },
+  '双鱼座': { match: ['巨蟹座', '天蝎座', '摩羯座'], okay: ['金牛座', '双鱼座'], challenge: ['双子座', '射手座'] },
+};
+
+const matchBands = [
+  {
+    min: 88,
+    max: 100,
+    comment: '天作之合',
+    subtitle: '两个人的磁场天然对上了频道',
+    advice: '别再端着了，约会频率拉起来，尽快从试探切到真实相处。',
+    rank: 'super_lucky' as const,
+    celestial: { planet: '金星', aspect: '金星拱月', moonPhase: '盈凸月' },
+  },
+  {
+    min: 76,
+    max: 87,
+    comment: '心动同频',
+    subtitle: '好感和默契都在增长，值得认真推进',
+    advice: '继续加深了解，别只聊表面，价值观和节奏要尽快对齐。',
+    rank: 'lucky' as const,
+    celestial: { planet: '金星', aspect: '水星六合', moonPhase: '上弦月' },
+  },
+  {
+    min: 64,
+    max: 75,
+    comment: '有戏可追',
+    subtitle: '吸引力存在，但关系还没完全落位',
+    advice: '别急着定义关系，先靠稳定互动把熟悉感做出来。',
+    rank: 'lucky' as const,
+    celestial: { planet: '月亮', aspect: '月亮拱木星', moonPhase: '眉月' },
+  },
+  {
+    min: 52,
+    max: 63,
+    comment: '需要磨合',
+    subtitle: '不是没缘分，是节奏和表达方式还没咬上',
+    advice: '多聊真实需求，少靠猜；愿不愿意磨合，比一时的心动更重要。',
+    rank: 'average' as const,
+    celestial: { planet: '土星', aspect: '土星调频', moonPhase: '下弦月' },
+  },
+  {
+    min: 0,
+    max: 51,
+    comment: '缘分偏淡',
+    subtitle: '吸引点不够稳定，推进太猛容易掉线',
+    advice: '先把期待放低，保持轻松来往；真不顺就别硬拧。',
+    rank: 'bad' as const,
+    celestial: { planet: '天王星', aspect: '火星轻冲', moonPhase: '残月' },
+  },
 ];
 
+const matchOverviewPool = {
+  super_lucky: [
+    '你们像是在人群里自动彼此高亮的那一类组合，越相处越容易确认“就是这个人”。',
+    '这不是那种虚浮的上头感，而是情绪、节奏、吸引力都能互相接住的稀缺匹配。',
+    '气场碰撞出来的不是短暂烟花，而是有机会往长期关系走的稳定火花。',
+  ],
+  lucky: [
+    '你们之间的拉力已经形成，只要互动别断，关系大概率会自然升温。',
+    '这是很适合慢热推进的一组配置，越往后看越容易看出彼此的可贵。',
+    '好感基础是有的，关键不在“配不配”，而在谁先把真诚拿出来。',
+  ],
+  average: [
+    '你们不是没可能，只是现在更像还没找到彼此舒服的打开方式。',
+    '吸引力有，但稳定性一般，想往前走就得靠沟通把误差慢慢磨掉。',
+    '这段关系的上限取决于双方愿不愿意认真理解对方，而不是停在想象里。',
+  ],
+  bad: [
+    '眼下这段缘分更像一次试卷，不一定是答案本身。勉强推进，反而容易消耗热情。',
+    '心动可能会有，但落到长期相处上，卡点会比甜点更明显。',
+    '不是绝对没戏，只是当前组合的阻力偏大，轻一点相处反而更舒服。',
+  ],
+};
+
+const matchReadingPool = {
+  chemistry: [
+    '你们的吸引点主要来自情绪反馈的速度：一个给信号，另一个接得住，聊天自然就容易上头。',
+    '这组组合在第一印象上很容易彼此加分，尤其在轻松环境里，火花会比正式场景更明显。',
+    '两个人的氛围感并不差，关键在于别太端着，越自然越容易把好感坐实。',
+    '你们的互动像慢慢加温的水，不是一秒炸裂，但后劲反而更真。',
+  ],
+  obstacle: [
+    '最大问题不是不喜欢，而是容易各自脑补，谁都在等对方先给确定感。',
+    '你们的卡点多半出在节奏：一个想快一点确认，一个还在观察。',
+    '如果总停留在礼貌和客气，关系会一直浮在表面，很难真正推进。',
+    '别拿“随缘”当借口，本质上是沟通深度不够，聊不到关键处。',
+  ],
+  direction: [
+    '最有效的推进方式不是尬聊，而是一起做点具体的事，比如吃饭、散步、看展。',
+    '下次互动建议把话题从兴趣延伸到生活习惯和恋爱观，真假匹配一聊就知道。',
+    '与其反复试探，不如主动制造一次轻松见面，真实相处比线上聊天更说明问题。',
+    '你们需要的是“稳定出现”而不是“偶尔上头”，节奏一稳，关系就会明朗很多。',
+  ],
+};
+
+const matchTipPool = [
+  { emoji: '💬', text: '下一次聊天别只停留在寒暄，试着聊聊恋爱观或相处底线。' },
+  { emoji: '🍽️', text: '吃饭比纯文字聊天更容易看出默契，能约就别一直线上空转。' },
+  { emoji: '🧭', text: '先看节奏是否舒服，再谈结果，别被短期上头带偏。' },
+  { emoji: '✨', text: '保持一点主动，但别过量输出，留给对方回应空间。' },
+  { emoji: '🪞', text: '你看中的不只是感觉，也要看对方是否愿意为关系投入。' },
+  { emoji: '🌙', text: '晚上沟通情绪类话题更顺，白天适合轻松邀约。' },
+  { emoji: '🎯', text: '别反复测试同一句话术，真实表达比套路更有用。' },
+  { emoji: '🌸', text: '如果对方让你持续内耗，再高分也没意义，舒服最重要。' },
+];
+
+function parseBirthday(date: string) {
+  const [year, month, day] = date.split('-').map(Number);
+  return { year, month, day };
+}
+
+function getSeason(month: number) {
+  if ([3, 4, 5].includes(month)) return 'spring';
+  if ([6, 7, 8].includes(month)) return 'summer';
+  if ([9, 10, 11].includes(month)) return 'autumn';
+  return 'winter';
+}
+
+function clamp(value: number, min: number, max: number) {
+  return Math.max(min, Math.min(max, value));
+}
+
+function hashString(input: string) {
+  let hash = 0;
+  for (let i = 0; i < input.length; i += 1) {
+    hash = (hash * 31 + input.charCodeAt(i)) >>> 0;
+  }
+  return hash;
+}
+
+function pickBySeed<T>(items: T[], seed: number, offset = 0): T {
+  return items[(seed + offset) % items.length];
+}
+
+function buildLuckyElement(score: number, seed: number) {
+  const colors = ['樱花粉', '蜜桃橘', '雾紫色', '奶油白', '月光银', '晨雾蓝', '玫瑰金', '焦糖棕'];
+  const times = ['09:00-11:00', '11:00-13:00', '14:00-16:00', '18:00-20:00', '20:00-22:00'];
+  const directions = ['东', '东南', '南', '西南', '西', '西北', '北', '东北'];
+  const places = ['咖啡馆', '小酒馆', '商场', '书店', '展览馆', '江边散步道', '甜品店', '电影院'];
+
+  return {
+    color: pickBySeed(colors, seed),
+    number: (score + seed) % 9 + 1,
+    time: pickBySeed(times, seed, 3),
+    direction: pickBySeed(directions, seed, 5),
+    place: pickBySeed(places, seed, 7),
+  };
+}
+
 // 获取匹配结果
-export function getMatchResult(score: number): MatchResult {
-  const result = matchComments.find(m => score >= m.min && score <= m.max);
+export function getMatchResult(
+  score: number,
+  yourInfo?: { birthday: string; zodiac?: string },
+  otherInfo?: { birthday: string; zodiac?: string }
+): MatchResult {
+  const band = matchBands.find((item) => score >= item.min && score <= item.max) || matchBands[2];
+  const signature = `${yourInfo?.birthday || ''}|${yourInfo?.zodiac || ''}|${otherInfo?.birthday || ''}|${otherInfo?.zodiac || ''}|${score}`;
+  const seed = hashString(signature);
+
+  const romanticEnergy = clamp(score + (seed % 7) - 3, 35, 99);
+  const charmAura = clamp(score - 4 + ((seed >> 2) % 9), 30, 98);
+  const soulResonance = clamp(score - 2 + ((seed >> 4) % 11) - 5, 28, 99);
+  const emotionalDepth = clamp(score + ((seed >> 6) % 13) - 6, 26, 98);
+  const fateConnection = clamp(score + ((seed >> 8) % 15) - 7, 22, 99);
+
   return {
     score,
-    comment: result?.comment || '未知',
-    advice: result?.advice || '顺其自然'
+    comment: band.comment,
+    subtitle: band.subtitle,
+    advice: band.advice,
+    rank: band.rank,
+    overview: pickBySeed(matchOverviewPool[band.rank], seed),
+    lucky: buildLuckyElement(score, seed),
+    celestial: band.celestial,
+    energyProfile: {
+      romanticEnergy,
+      charmAura,
+      soulResonance,
+      emotionalDepth,
+      fateConnection,
+    },
+    readings: [
+      {
+        title: '吸引力落点',
+        content: pickBySeed(matchReadingPool.chemistry, seed, 1),
+      },
+      {
+        title: '关系卡点',
+        content: pickBySeed(matchReadingPool.obstacle, seed, 3),
+      },
+      {
+        title: '推进建议',
+        content: pickBySeed(matchReadingPool.direction, seed, 5),
+      },
+    ],
+    tips: [
+      pickBySeed(matchTipPool, seed, 0),
+      pickBySeed(matchTipPool, seed, 2),
+      pickBySeed(matchTipPool, seed, 5),
+    ],
   };
+}
+
+// 计算匹配度（基于生日和星座）
+export function calculateMatchScore(yourInfo: { birthday: string; zodiac?: string }, otherInfo: { birthday: string; zodiac?: string }): number {
+  const your = parseBirthday(yourInfo.birthday);
+  const other = parseBirthday(otherInfo.birthday);
+
+  const dayGap = Math.abs(your.day - other.day);
+  const monthGap = Math.abs(your.month - other.month);
+  const yearGap = Math.abs(your.year - other.year);
+  const sameSeason = getSeason(your.month) === getSeason(other.month);
+
+  let score = 58;
+
+  score += 18 - Math.min(dayGap, 18);
+  score += 10 - Math.min(monthGap, 10);
+  score += Math.max(0, 12 - Math.floor(yearGap / 2));
+  score += ((your.day * 7 + other.day * 11 + your.month * 13 + other.month * 17 + your.year + other.year) % 9) - 4;
+
+  if (sameSeason) score += 6;
+  if (your.day === other.day) score += 5;
+  if (your.month === other.month) score += 4;
+
+  if (yourInfo.zodiac && otherInfo.zodiac) {
+    const rule = zodiacCompatibility[yourInfo.zodiac];
+    if (rule?.match.includes(otherInfo.zodiac)) {
+      score += 10;
+    } else if (rule?.okay.includes(otherInfo.zodiac)) {
+      score += 4;
+    } else if (rule?.challenge.includes(otherInfo.zodiac)) {
+      score -= 9;
+    } else {
+      score -= 2;
+    }
+
+    if (yourInfo.zodiac === otherInfo.zodiac) {
+      score += 3;
+    }
+  }
+
+  return clamp(score, 38, 98);
 }
 
 // 复合抽签签文数据
@@ -373,36 +609,3 @@ export function getDailyFortuneByDate(date: string): DailyFortune {
   };
 }
 
-// 计算匹配度（基于生日和星座）
-export function calculateMatchScore(yourInfo: { birthday: string; zodiac?: string }, otherInfo: { birthday: string; zodiac?: string }): number {
-  // 简单的匹配算法
-  const yourDay = parseInt(yourInfo.birthday.split('-')[2]);
-  const otherDay = parseInt(otherInfo.birthday.split('-')[2]);
-  
-  // 基于日期的伪随机匹配度
-  let score = 50 + Math.abs(yourDay - otherDay) % 40;
-  
-  // 如果有星座信息，可以增加匹配度
-  if (yourInfo.zodiac && otherInfo.zodiac) {
-    const compatibleZodiacs: Record<string, string[]> = {
-      '白羊座': ['狮子座', '射手座', '双子座'],
-      '金牛座': ['处女座', '摩羯座', '金牛座'],
-      '双子座': ['天秤座', '水瓶座', '白羊座'],
-      '巨蟹座': ['天蝎座', '双鱼座', '金牛座'],
-      '狮子座': ['白羊座', '射手座', '双子座'],
-      '处女座': ['金牛座', '摩羯座', '处女座'],
-      '天秤座': ['双子座', '水瓶座', '狮子座'],
-      '天蝎座': ['巨蟹座', '双鱼座', '摩羯座'],
-      '射手座': ['白羊座', '狮子座', '水瓶座'],
-      '摩羯座': ['金牛座', '处女座', '天蝎座'],
-      '水瓶座': ['双子座', '天秤座', '射手座'],
-      '双鱼座': ['巨蟹座', '天蝎座', '金牛座']
-    };
-    
-    if (compatibleZodiacs[yourInfo.zodiac]?.includes(otherInfo.zodiac)) {
-      score += 15;
-    }
-  }
-  
-  return Math.min(100, score);
-}

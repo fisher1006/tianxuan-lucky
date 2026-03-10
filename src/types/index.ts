@@ -80,8 +80,14 @@ export interface MatchResult {
   score: number;
   comment: string;
   advice: string;
+  subtitle?: string;
   overview?: string;
   lucky?: LuckyElement;
+  energyProfile?: EnergyProfile;
+  celestial?: Celestial;
+  readings?: Reading[];
+  tips?: string[] | FortuneTip[];
+  rank?: 'super_lucky' | 'lucky' | 'average' | 'bad';
 }
 
 // 复合抽签结果

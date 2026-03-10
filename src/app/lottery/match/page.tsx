@@ -34,7 +34,11 @@ export default function MatchPage() {
         { birthday: yourBirthday, zodiac: yourZodiac || undefined },
         { birthday: otherBirthday, zodiac: otherZodiac || undefined }
       );
-      const matchResult = getMatchResult(score);
+      const matchResult = getMatchResult(
+        score,
+        { birthday: yourBirthday, zodiac: yourZodiac || undefined },
+        { birthday: otherBirthday, zodiac: otherZodiac || undefined }
+      );
       setResult(matchResult);
       setStep('result');
     }, 3000);
@@ -155,8 +159,8 @@ export default function MatchPage() {
           
           <div className="mt-6 space-y-3">
             <ShareButton
-              title={`💖 我们的匹配度：${result.score}%`}
-              text={`匹配度：${result.score}%\n${result.comment}\n\n${result.advice}`}
+              title={`💖 我们的匹配度：${result.score}%｜${result.comment}`}
+              text={`匹配度：${result.score}%\n${result.subtitle || result.comment}\n\n${result.overview || ''}\n\n${result.advice}`.trim()}
             />
             
             <motion.button
