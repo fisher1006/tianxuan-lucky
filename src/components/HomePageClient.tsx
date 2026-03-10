@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { INVITE_SESSION_STORAGE_KEY } from '@/lib/invite-auth';
 
 const features = [
@@ -53,31 +53,67 @@ const floatingDecorations = [
   { left: '14%', top: '48%', duration: 4.0, delay: 1.0 },
 ];
 
-const INVITE_GUIDE_URL = process.env.NEXT_PUBLIC_INVITE_GUIDE_URL || 'https://m.tb.cn/h.iWkvBKV?tk=ASOXUvkoITC';
+const INVITE_GUIDE_URL = (process.env.NEXT_PUBLIC_INVITE_GUIDE_URL || 'https://m.tb.cn/h.ie7IijM?tk=sMOqUvGcot4').trim();
 
 interface HomePageClientProps {
   isVerified: boolean;
 }
 
 export default function HomePageClient({ isVerified }: HomePageClientProps) {
-  useEffect(() => {
-    if (!isVerified) return;
-    if (window.localStorage.getItem(INVITE_SESSION_STORAGE_KEY)) return;
+  const [restoringAccess, setRestoringAccess] = useState(false);
 
-    const syncInviteSession = async () => {
+  useEffect(() => {
+    const restoreOrSyncInviteSession = async () => {
+      const savedSessionToken = window.localStorage.getItem(INVITE_SESSION_STORAGE_KEY);
+
+      if (isVerified) {
+        if (savedSessionToken) return;
+
+        try {
+          const response = await fetch('/api/invite/session', { method: 'GET' });
+          const result = await response.json();
+
+          if (response.ok && result.success && result.sessionToken) {
+            window.localStorage.setItem(INVITE_SESSION_STORAGE_KEY, result.sessionToken);
+          }
+        } catch {
+          // 忽略同步失败，不影响当前会话
+        }
+
+        return;
+      }
+
+      if (!savedSessionToken) return;
+
+      setRestoringAccess(true);
+
       try {
-        const response = await fetch('/api/invite/session', { method: 'GET' });
+        const response = await fetch('/api/invite/session', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ token: savedSessionToken }),
+        });
         const result = await response.json();
 
-        if (response.ok && result.success && result.sessionToken) {
-          window.localStorage.setItem(INVITE_SESSION_STORAGE_KEY, result.sessionToken);
+        if (response.ok && result.success) {
+          if (result.sessionToken) {
+            window.localStorage.setItem(INVITE_SESSION_STORAGE_KEY, result.sessionToken);
+          }
+          window.location.reload();
+          return;
         }
+
+        window.localStorage.removeItem(INVITE_SESSION_STORAGE_KEY);
       } catch {
-        // 忽略同步失败，不影响当前会话
+        // 忽略恢复失败，保留未解锁态
+      } finally {
+        setRestoringAccess(false);
       }
     };
 
-    void syncInviteSession();
+    void restoreOrSyncInviteSession();
   }, [isVerified]);
 
   if (!isVerified) {
@@ -99,7 +135,7 @@ export default function HomePageClient({ isVerified }: HomePageClientProps) {
             天选桃花运
           </h1>
           <p className="text-gray-500 mb-8">
-            需要邀请码才能使用
+            {restoringAccess ? '正在恢复邀请码状态...' : '需要邀请码才能使用'}
           </p>
           <div className="flex flex-col items-center gap-3">
             <Link
